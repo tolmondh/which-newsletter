@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from Substack to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Practical outline for migrating a newsletter from Substack to beehiiv: export, import, DNS, paid subscribers, and checklist.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/substack-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/substack-to-beehiiv.html" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from Substack to beehiiv</h1>
+      <p class="lede">
+        A practical outline of the real steps — not a magic one-click promise.
+        Confirm each step against current Substack and beehiiv docs before you move a live list.
+      </p>
+      <p class="meta">Guide outline · September 2026 · See also <a href="/which-newsletter/compare.html">platform comparison</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#prepare">Prepare accounts and backups</a></li>
+          <li><a href="#export">Export from Substack</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#paid">Handle paid subscribers</a></li>
+          <li><a href="#dns">Domain, DNS, and branding</a></li>
+          <li><a href="#content">Posts, archives, and redirects</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Platforms change export/import UIs. This is a process map. Paid subscriptions and payment processors are the riskiest part — plan those carefully.</p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>Move when beehiiv’s growth/monetization tools matter more than Substack’s network and simplicity. Stay if discovery and low ops still win for you. Read the <a href="/which-newsletter/compare.html">comparison</a> first.</p>
+      <ul>
+        <li>List size and growth goals</li>
+        <li>Whether you need ads/sponsorship tooling vs reader-paid only</li>
+        <li>How painful paid-subscriber migration will be for your audience</li>
+      </ul>
+
+      <h2 id="prepare">2. Prepare accounts and backups</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create and verify your beehiiv publication</strong>
+          Pick the plan you’ll need for your list size and features. Confirm sending domain requirements early.
+        </li>
+        <li>
+          <strong>Inventory what you have on Substack</strong>
+          Free vs paid subscribers, segments, posts you care about, custom links, and any integrations.
+        </li>
+        <li>
+          <strong>Download everything you might need later</strong>
+          Subscriber CSVs, post exports or copies, media, and a note of your publication URL and social links.
+        </li>
+      </ol>
+
+      <h2 id="export">3. Export from Substack</h2>
+      <p>Typical path (verify in Substack settings):</p>
+      <ul>
+        <li>Export subscribers (often separate free and paid, or tagged in CSV).</li>
+        <li>Export or archive posts you want to republish.</li>
+        <li>Note unsubscribe and suppression considerations — don’t re-mail people who opted out.</li>
+      </ul>
+      <p>Clean the CSV: emails, names, status (free/paid), signup date if available. Remove obvious bad rows.</p>
+
+      <h2 id="import">4. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Import subscribers via beehiiv’s import tools</strong>
+          Map fields carefully. Tag or segment former Substack free vs paid if you can.
+        </li>
+        <li>
+          <strong>Confirm double opt-in / compliance settings</strong>
+          Follow beehiiv’s guidance and your local email laws. Don’t blast a cold import without a warm re-permission plan if required.
+        </li>
+        <li>
+          <strong>Send a small test</strong>
+          Deliverability check to yourself and a few trusted addresses before any mass send.
+        </li>
+      </ol>
+
+      <h2 id="paid">5. Handle paid subscribers</h2>
+      <p>This is the hard part. Substack billing does not “move” automatically to beehiiv.</p>
+      <ul>
+        <li>Decide: cancel-and-rejoin on beehiiv, grandfather rates, or run parallel for a transition window.</li>
+        <li>Communicate clearly: why you’re moving, what happens to access, how to resubscribe, and support contact.</li>
+        <li>Expect churn. Plan a grace period and a personal note to high-value subscribers.</li>
+        <li>Confirm Stripe (or beehiiv’s billing) setup, taxes, and receipts before you invite people to pay again.</li>
+      </ul>
+
+      <h2 id="dns">6. Domain, DNS, and branding</h2>
+      <ul>
+        <li>If you use a custom domain or custom sending domain on beehiiv, add SPF/DKIM (and DMARC as recommended) at your DNS host.</li>
+        <li>Update website CTAs, Linktree, social bios, and email signatures away from the Substack URL over time.</li>
+        <li>Keep the Substack publication up with a pinned post pointing to the new home during transition.</li>
+      </ul>
+
+      <h2 id="content">7. Posts, archives, and redirects</h2>
+      <ul>
+        <li>Republish key posts in beehiiv if you want a living archive (or link out to Substack archives temporarily).</li>
+        <li>You usually cannot fully 301 every Substack URL onto beehiiv the way you’d migrate a self-hosted blog — plan for broken deep links and update your most shared URLs manually.</li>
+        <li>Rebuild welcome/onboarding emails and referral flows in beehiiv’s tools.</li>
+      </ul>
+
+      <h2 id="cutover">8. Cutover and communication</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce early</strong>
+          Tell free and paid readers what’s changing and when. One clear email beats three vague ones.
+        </li>
+        <li>
+          <strong>Pause Substack publishing</strong>
+          Or publish only a redirect notice. Avoid dual-sending the same content to the same people.
+        </li>
+        <li>
+          <strong>Send the first beehiiv issue</strong>
+          Include a short “you’re here now” note and how to update preferences.
+        </li>
+        <li>
+          <strong>Monitor bounces and complaints</strong>
+          Fix DNS/auth issues immediately; suppress hard bounces.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Subscriber export saved offline</li>
+        <li>Import complete; segments tagged</li>
+        <li>Sending domain authenticated</li>
+        <li>Paid transition plan + support reply template</li>
+        <li>Welcome/automation rebuilt</li>
+        <li>Public links updated (site, social, bio)</li>
+        <li>Substack notice posted</li>
+        <li>First live send tested</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          Ready to evaluate beehiiv against alternatives?
+          <!-- AFFILIATE: Replace href with real beehiiv partner link when available -->
+          <a href="#" data-affiliate="beehiiv">Visit beehiiv</a>
+          (placeholder) · or return to the <a href="/which-newsletter/compare.html">full comparison</a>.
+        </p>
+      </div>
+
+      <p><a href="/which-newsletter/guides/course-creators.html">Next guide: Which platform fits course creators →</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, or Substack unless stated otherwise.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tolmondh.github.io/which-newsletter/sitemap.xml
