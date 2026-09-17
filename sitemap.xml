@@ -25,6 +25,42 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/beehiiv-vs-substack.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/beehiiv-pricing.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/beehiiv-vs-kit.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/substack-alternatives.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/start-paid-newsletter-beehiiv.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tolmondh.github.io/which-newsletter/guides/substack-to-beehiiv.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
