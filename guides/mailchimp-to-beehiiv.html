@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from Mailchimp to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Step-by-step guide for creators migrating a newsletter from Mailchimp to beehiiv: export, import, segmentation caveats, automations rebuild, and cutover checklist.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/mailchimp-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from Mailchimp to beehiiv</h1>
+      <p class="lede">
+        A practical cutover plan for newsletter creators leaving Mailchimp for beehiiv —
+        export, import, what will not transfer cleanly, and how to tell your list without chaos.
+        Confirm each step against current Mailchimp and beehiiv docs before you move a live audience.
+      </p>
+      <p class="meta">Guide outline · September 2026 · See also <a href="/which-newsletter/compare.html">platform comparison</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#caveats">Honest caveats (segments &amp; automations)</a></li>
+          <li><a href="#prepare">Prepare accounts and backups</a></li>
+          <li><a href="#export">Export from Mailchimp</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#rebuild">Rebuild what Mailchimp won’t move</a></li>
+          <li><a href="#dns">Domain, DNS, and branding</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Export/import UIs change. This is a process map, not a vendor guarantee. Mailchimp’s deeper ESP tooling (complex segments, journeys, ecommerce syncs) does not “port” into beehiiv one-to-one — plan rebuild time.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Evaluating beehiiv as your next home? Start on Launch and upgrade when you need growth or monetization features.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>
+        Mailchimp is a full email service provider: audiences, nested segments, journeys, ecommerce connectors, and agency-style reporting.
+        beehiiv is built around the newsletter as the product — publishing, growth loops, referrals, ads/sponsorship tooling, and paid subscriptions.
+      </p>
+      <p>Move when you care more about newsletter growth and monetization than Mailchimp’s ESP depth. Stay (or pick Kit/Ghost) if your business runs on complex automations, heavy tagging, or ecommerce syncs you are not ready to rebuild.</p>
+      <ul>
+        <li>How much of your Mailchimp setup is “newsletter sends” vs multi-step journeys?</li>
+        <li>Whether ads, boosts, or paid subscriptions matter more than advanced segmentation</li>
+        <li>Team capacity to rebuild welcome flows and segments after import</li>
+      </ul>
+      <p>Read the <a href="/which-newsletter/compare.html">platform comparison</a> and <a href="/which-newsletter/guides/beehiiv-vs-kit.html">beehiiv vs Kit</a> if you are still choosing between newsletter-first and ESP-first tools.</p>
+
+      <h2 id="caveats">2. Honest caveats (segments &amp; automations)</h2>
+      <p>Expect friction here. Do not assume a clean lift-and-shift.</p>
+      <ul>
+        <li>
+          <strong>Segmentation models differ.</strong>
+          Mailchimp audiences, tags, groups, and nested segments often do not map 1:1 to beehiiv’s segments/tags.
+          Export what you need as columns or separate CSVs, then rebuild the segments that still matter on beehiiv.
+        </li>
+        <li>
+          <strong>Automations and journeys do not transfer.</strong>
+          Welcome series, abandoned-cart style flows, and branch logic stay in Mailchimp.
+          Budget time to recreate only the flows you actually use — often a simple welcome + a few nurture emails is enough on a newsletter stack.
+        </li>
+        <li>
+          <strong>Templates and campaigns are not portable as-is.</strong>
+          Redesign key templates in beehiiv rather than fighting HTML paste jobs.
+        </li>
+        <li>
+          <strong>Integrations need rewiring.</strong>
+          Forms, Zapier/Make hooks, Shopify/CRM syncs, and signup embeds point at Mailchimp today — update destinations before you stop Mailchimp sends.
+        </li>
+        <li>
+          <strong>Compliance and suppressions still apply.</strong>
+          Preserve unsubscribes and bounced addresses. Do not re-permission people who opted out.
+        </li>
+      </ul>
+
+      <h2 id="prepare">3. Prepare accounts and backups</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create and verify your beehiiv publication</strong>
+          Pick the plan that matches list size and features you need (custom domain, ads, paid, etc.). Confirm sending-domain requirements early.
+        </li>
+        <li>
+          <strong>Inventory your Mailchimp account</strong>
+          Audiences in use, critical segments/tags, active journeys, signup forms, connected apps, and which campaigns are “must keep” for archive reference.
+        </li>
+        <li>
+          <strong>Download backups offline</strong>
+          Contact exports, suppression/unsubscribe lists, a note of custom fields, and copies of essential email copy you will rebuild.
+        </li>
+      </ol>
+
+      <h2 id="export">4. Export from Mailchimp</h2>
+      <p>Typical path (verify in Mailchimp’s current audience/export UI):</p>
+      <ul>
+        <li>Export subscribed contacts from each audience you intend to migrate.</li>
+        <li>Export or separately save unsubscribed and cleaned addresses so you do not re-mail them.</li>
+        <li>Include useful fields: email, first name, signup source/date if available, tags or group memberships you still care about.</li>
+        <li>If you rely on many segments, export segment memberships as extra columns or separate files — you will rebuild logic later.</li>
+      </ul>
+      <p>Clean the CSV before import: normalize emails, drop obvious junk rows, and keep a clear status column (subscribed vs suppressed).</p>
+
+      <h2 id="import">5. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Import via beehiiv’s subscriber import tools</strong>
+          Map fields carefully. Tag former Mailchimp segments that you still need (e.g. “vip”, “course-buyer”, “free-only”).
+        </li>
+        <li>
+          <strong>Respect opt-in and local email rules</strong>
+          Follow beehiiv’s guidance and your jurisdiction. A warm “we’re moving homes” note beats a sudden blast from a new domain.
+        </li>
+        <li>
+          <strong>Send small tests first</strong>
+          Authenticate sending, then deliver to yourself and a few trusted inboxes before any mass send.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>
+          Ready to set up the new publication while you still finish exports?
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="rebuild">6. Rebuild what Mailchimp won’t move</h2>
+      <ul>
+        <li><strong>Welcome / onboarding:</strong> Recreate a short welcome sequence in beehiiv — one clear first email often beats a 12-step journey you never maintained.</li>
+        <li><strong>Segments that still earn their keep:</strong> Rebuild only high-value splits (paid vs free, product buyers, geography if you use it). Drop zombie segments.</li>
+        <li><strong>Signup forms &amp; embeds:</strong> Replace Mailchimp forms on your site, Linktree, course thank-you pages, and social bios.</li>
+        <li><strong>Referral / growth features:</strong> If growth was why you left Mailchimp, turn on beehiiv’s referral and related tools after the list is stable.</li>
+        <li><strong>Paid offers:</strong> If you sell subscriptions or digital products via email, confirm beehiiv’s paid/subscription path (or keep checkout elsewhere and use beehiiv for the list).</li>
+      </ul>
+
+      <h2 id="dns">7. Domain, DNS, and branding</h2>
+      <ul>
+        <li>Add SPF/DKIM (and DMARC as recommended) for beehiiv’s sending domain at your DNS host.</li>
+        <li>If Mailchimp authenticated the same root or subdomain, plan the cutover so you do not break both senders at once — stagger or use distinct sending subdomains when possible.</li>
+        <li>Update website CTAs, footers, and “subscribe” buttons away from Mailchimp forms.</li>
+        <li>Keep Mailchimp paused-but-accessible during a short overlap for suppressions and last exports.</li>
+      </ul>
+
+      <h2 id="cutover">8. Cutover and communication</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce early</strong>
+          Tell subscribers you’re moving email homes, what (if anything) they need to do, and that preferences/unsubscribes still work.
+        </li>
+        <li>
+          <strong>Stop dual-sending the same content</strong>
+          Pick a date. After cutover, Mailchimp is archive/suppression only — not a second blast channel to the same people.
+        </li>
+        <li>
+          <strong>Send the first beehiiv issue</strong>
+          Include a short “you’re here now” note, how to update preferences, and a reply-friendly support address.
+        </li>
+        <li>
+          <strong>Watch deliverability</strong>
+          Monitor bounces and complaints; fix auth issues immediately; suppress hard bounces.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Contact + unsubscribe/suppression exports saved offline</li>
+        <li>Import complete; must-have tags/segments rebuilt</li>
+        <li>Sending domain authenticated on beehiiv</li>
+        <li>Welcome (and any critical) automations rebuilt — not assumed transferred</li>
+        <li>Site/forms/embeds pointed at beehiiv</li>
+        <li>Integrations rewired or intentionally dropped</li>
+        <li>Audience notified; Mailchimp dual-send stopped</li>
+        <li>First live beehiiv send tested</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If a newsletter-first stack is the goal — growth tools, ads/sponsorships, and simpler ops than a full ESP — beehiiv is the path this guide assumes.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/substack-to-beehiiv.html">Migrate Substack → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-vs-kit.html">beehiiv vs Kit</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, or Substack unless stated otherwise.</p>
+    </div>
+  </footer>
+</body>
+</html>
