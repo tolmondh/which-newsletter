@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from ConvertKit (Kit) to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Step-by-step guide for creators migrating from ConvertKit / Kit to beehiiv: export subscribers, rebuild sequences, DNS, and a clean cutover checklist.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/convertkit-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from ConvertKit (Kit) to beehiiv</h1>
+      <p class="lede">
+        A practical cutover plan if you are leaving Kit (formerly ConvertKit) for beehiiv —
+        what exports cleanly, what you must rebuild, and how to switch without confusing your list.
+        Confirm each step against current Kit and beehiiv docs before you move a live audience.
+      </p>
+      <p class="meta">Guide outline · September 2026 · See also <a href="/which-newsletter/guides/beehiiv-vs-kit.html">beehiiv vs Kit</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#caveats">What will not transfer one-to-one</a></li>
+          <li><a href="#prepare">Prepare accounts and backups</a></li>
+          <li><a href="#export">Export from Kit / ConvertKit</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#rebuild">Rebuild sequences and forms</a></li>
+          <li><a href="#dns">Domain, DNS, and branding</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Product names and export UIs change. Kit is the current brand for what many still call ConvertKit. This is a process map, not a vendor guarantee. Complex tag rules, visual automations, and commerce connectors do not “port” into beehiiv — budget rebuild time.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Switching because you want newsletter growth, referrals, ads/sponsorship tooling, and a simpler publishing loop? Start on beehiiv Launch and upgrade when you need Scale features.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>
+        Kit is a creator ESP: tags, sequences, visual automations, creator commerce hooks, and deep audience tooling.
+        beehiiv is newsletter-first: publishing cadence, growth loops, referrals, ads/boosts, and paid subscriptions around the publication itself.
+      </p>
+      <p>Move when the newsletter <em>is</em> the product and you want growth/monetization features closer to the inbox experience. Stay on Kit if your business depends on multi-step sequences, heavy tagging, or course/product funnels you are not ready to rebuild elsewhere.</p>
+      <ul>
+        <li>How much of your Kit setup is periodic newsletters vs automated sequences?</li>
+        <li>Whether ads, boosts, or paid subscriptions matter more than ESP depth</li>
+        <li>Capacity to rebuild welcome flows and key tags after import</li>
+      </ul>
+      <p>Read <a href="/which-newsletter/guides/beehiiv-vs-kit.html">beehiiv vs Kit</a> and the <a href="/which-newsletter/compare.html">platform comparison</a> if you are still choosing.</p>
+
+      <h2 id="caveats">2. What will not transfer one-to-one</h2>
+      <ul>
+        <li><strong>Sequences / automations:</strong> Expect to rebuild welcome series and key flows in beehiiv (or a connected tool), not import them.</li>
+        <li><strong>Tags and rules:</strong> Subscriber lists/exports usually move; complex tag logic and visual automation graphs do not.</li>
+        <li><strong>Forms and landing pages:</strong> Recreate embeds and pages; do not assume Kit form URLs keep working forever after cancel.</li>
+        <li><strong>Integrations:</strong> Zapier/Make/webhooks and commerce syncs need rewiring.</li>
+        <li><strong>Historical send analytics:</strong> Keep Kit exports or screenshots if you need old campaign stats.</li>
+      </ul>
+
+      <h2 id="prepare">3. Prepare accounts and backups</h2>
+      <ol>
+        <li>Create a beehiiv publication on Launch (or your intended plan) and confirm you can send a test.</li>
+        <li>In Kit, export a full subscriber CSV (and any segment/tag exports you rely on). Store a dated backup offline.</li>
+        <li>List every live form, landing page, and “subscribe” button that still points at Kit.</li>
+        <li>Note custom sending domain / DNS records currently used with Kit so you can re-auth on beehiiv.</li>
+        <li>Freeze big list changes for a short window if you can — fewer mid-migration edge cases.</li>
+      </ol>
+
+      <h2 id="export">4. Export from Kit / ConvertKit</h2>
+      <p>Exact menu labels change; the goal is a CSV with email, name fields you use, and status (subscribed/unsubscribed) where available.</p>
+      <ul>
+        <li>Export all active subscribers you intend to keep mailing.</li>
+        <li>Export unsubscribes/suppressions if Kit provides them separately — honor them on import.</li>
+        <li>Optionally export tagged cohorts you will recreate as beehiiv segments or custom fields.</li>
+        <li>Do not import people who never opted in; stick to your existing permission basis.</li>
+      </ul>
+
+      <h2 id="import">5. Import into beehiiv</h2>
+      <ol>
+        <li>Use beehiiv’s subscriber import for your CSV. Map email and name fields carefully.</li>
+        <li>Suppress or exclude known unsubscribes so you do not re-mail people who opted out.</li>
+        <li>Send a small internal test after import before any broadcast to the full list.</li>
+        <li>Spot-check a few known addresses (you, a teammate, a secondary inbox).</li>
+      </ol>
+      <p>If beehiiv warns about duplicates or formatting, fix the CSV and re-import cleanly rather than stacking partial loads.</p>
+
+      <h2 id="rebuild">6. Rebuild sequences and forms</h2>
+      <ul>
+        <li>Rebuild the welcome / onboarding series you actually use (not every Kit automation).</li>
+        <li>Replace Kit forms and embed codes on your site, Link-in-bio, and course thank-you pages.</li>
+        <li>Reconnect critical Zaps or webhooks to beehiiv events.</li>
+        <li>If you sold digital products through Kit commerce, plan the new checkout path before cutover day.</li>
+      </ul>
+      <p>Related: <a href="/which-newsletter/guides/course-creators.html">newsletter platforms for course creators</a>.</p>
+
+      <h2 id="dns">7. Domain, DNS, and branding</h2>
+      <ul>
+        <li>Authenticate your sending domain in beehiiv (SPF/DKIM as their docs require).</li>
+        <li>Update custom newsletter domain or publication URL settings if you use them.</li>
+        <li>Align logo, from-name, reply-to, and footer legal text with your brand.</li>
+        <li>Remove or update old Kit DNS entries only after beehiiv auth is verified with test sends.</li>
+      </ul>
+
+      <h2 id="cutover">8. Cutover and communication</h2>
+      <ol>
+        <li>Pick a cutover window. Stop dual-sending the same newsletter from Kit and beehiiv.</li>
+        <li>Tell subscribers once, plainly: same newsletter, new delivery home — no action needed if they already opted in.</li>
+        <li>Point every public subscribe CTA at beehiiv before you cancel Kit billing.</li>
+        <li>Keep Kit read-only for a short grace period in case you need one more export.</li>
+        <li>Watch bounces and complaints on the first two beehiiv sends.</li>
+      </ol>
+
+      <div class="soft-box">
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="checklist">9. Final checklist</h2>
+      <ul>
+        <li>Subscriber CSV backed up and imported</li>
+        <li>Unsubscribes honored</li>
+        <li>Sending domain authenticated on beehiiv</li>
+        <li>Welcome (and any critical) sequences rebuilt</li>
+        <li>Site/forms pointed at beehiiv</li>
+        <li>Integrations rewired or intentionally dropped</li>
+        <li>Audience notified; Kit dual-send stopped</li>
+        <li>First live beehiiv send tested</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If newsletter growth and monetization matter more than Kit’s ESP depth, beehiiv is the path this guide assumes.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/beehiiv-vs-kit.html">beehiiv vs Kit</a> ·
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/substack-to-beehiiv.html">Migrate Substack → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, or Substack unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
