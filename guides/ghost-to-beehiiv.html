@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from Ghost to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Step-by-step guide for publishers migrating a newsletter from Ghost to beehiiv: export members, handle paid Stripe subscriptions, rebuild content, DNS, and cutover checklist.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/ghost-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from Ghost to beehiiv</h1>
+      <p class="lede">
+        A practical cutover plan for publishers leaving Ghost for beehiiv —
+        member exports, paid-subscription caveats, what a CMS site will not transfer, and how to switch without confusing your list.
+        Confirm each step against current Ghost and beehiiv docs before you move a live audience.
+      </p>
+      <p class="meta">Guide outline · September 2026 · See also <a href="/which-newsletter/compare.html">platform comparison</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#caveats">Honest caveats (site, paid, content)</a></li>
+          <li><a href="#prepare">Prepare accounts and backups</a></li>
+          <li><a href="#export">Export from Ghost</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#paid">Paid members and Stripe</a></li>
+          <li><a href="#rebuild">Rebuild content, forms, and growth</a></li>
+          <li><a href="#dns">Domain, DNS, and branding</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Ghost export UIs, Ghost(Pro) vs self-host paths, and Stripe membership workflows change. This is a process map, not a vendor guarantee. Your Ghost publication website, theme, and CMS archive do not “port” into beehiiv as a full site — plan for that loss of ownership surface if the website mattered as much as the email list.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Switching because you want newsletter growth loops, referrals, ads/sponsorship tooling, and a simpler publishing cadence than running a CMS? Start on beehiiv Launch and upgrade when you need Scale features.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>
+        Ghost is a publishing CMS: owned site, themes, memberships via Stripe, and long-term control (Ghost(Pro) or self-host).
+        beehiiv is newsletter-first: publishing cadence, growth loops, referrals, ads/boosts, and paid subscriptions around the publication itself — not a full magazine CMS.
+      </p>
+      <p>Move when the email newsletter <em>is</em> the product and you want growth/monetization features closer to the inbox. Stay on Ghost if you need a branded publication website, CMS workflows, or Stripe memberships tightly tied to on-site content you are not ready to give up.</p>
+      <ul>
+        <li>How much of your Ghost value is the website vs the email list?</li>
+        <li>Whether ads, boosts, or beehiiv-style paid subs matter more than an owned CMS</li>
+        <li>How many paid members you have and whether Stripe cutover capacity exists</li>
+      </ul>
+      <p>Read the <a href="/which-newsletter/compare.html">platform comparison</a> and <a href="/which-newsletter/guides/substack-alternatives.html">Substack alternatives</a> if you are still choosing between owned-site and newsletter-first stacks.</p>
+
+      <h2 id="caveats">2. Honest caveats (site, paid, content)</h2>
+      <p>Expect friction here. Do not assume a clean lift-and-shift.</p>
+      <ul>
+        <li>
+          <strong>The Ghost website does not transfer.</strong>
+          Themes, pages, navigation, and the public CMS archive stay on Ghost (or go offline when you cancel).
+          beehiiv gives you a publication presence and email — not a Ghost-equivalent owned magazine site.
+        </li>
+        <li>
+          <strong>Posts and newsletters are not a one-click port.</strong>
+          You may export content for archive, but plan to republish key issues in beehiiv (or keep a static archive elsewhere) rather than expecting perfect HTML/theme fidelity.
+        </li>
+        <li>
+          <strong>Paid members need a deliberate Stripe plan.</strong>
+          Ghost memberships typically run through Stripe. beehiiv has its own paid-subscription path.
+          Moving paying customers means cancel/re-subscribe coordination, proration questions, and clear communication — not a silent CSV trick.
+        </li>
+        <li>
+          <strong>Self-host vs Ghost(Pro) differs.</strong>
+          Export locations and member tools vary. Follow Ghost’s current docs for your hosting path.
+        </li>
+        <li>
+          <strong>Compliance still applies.</strong>
+          Preserve unsubscribes and suppressions. Do not re-permission people who opted out.
+        </li>
+      </ul>
+
+      <h2 id="prepare">3. Prepare accounts and backups</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create and verify your beehiiv publication</strong>
+          Pick the plan that matches list size and features you need (custom domain, ads, paid, etc.). Confirm sending-domain requirements early.
+        </li>
+        <li>
+          <strong>Inventory your Ghost setup</strong>
+          Free members vs paid, active Stripe products/prices, custom sending domain, critical posts you want to keep public, and every “subscribe” CTA on the site.
+        </li>
+        <li>
+          <strong>Download backups offline</strong>
+          Member exports, a content/JSON or post export if available, notes on Stripe price IDs, and copies of essential email/welcome copy you will rebuild.
+        </li>
+        <li>
+          <strong>Decide the fate of the Ghost site</strong>
+          Keep it as a static archive, redirect key URLs, or shut it down after cutover — pick before you cancel billing.
+        </li>
+      </ol>
+
+      <h2 id="export">4. Export from Ghost</h2>
+      <p>Typical goals (verify in Ghost’s current members/content export UI for Ghost(Pro) or self-host):</p>
+      <ul>
+        <li>Export members with email, name, status (free/paid/comped where available), and labels/tiers you still care about.</li>
+        <li>Export or separately save suppressed/unsubscribed addresses so you do not re-mail them.</li>
+        <li>Export content/JSON if you want an offline archive of posts — treat it as backup, not a beehiiv import format.</li>
+        <li>From Stripe (not only Ghost), note active subscriptions tied to your Ghost products so paid cutover is intentional.</li>
+      </ul>
+      <p>Clean CSVs before import: normalize emails, drop junk rows, and keep a clear free-vs-paid vs suppressed column.</p>
+
+      <h2 id="import">5. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Import free/newsletter subscribers first</strong>
+          Use beehiiv’s subscriber import. Map fields carefully. Tag former Ghost cohorts you still need (e.g. “was-paid”, “founding”, “vip”).
+        </li>
+        <li>
+          <strong>Do not blindly import active paid Ghost members as free beehiiv paid</strong>
+          Paid access must follow beehiiv’s subscription setup and your Stripe/customer communication plan (next section).
+        </li>
+        <li>
+          <strong>Respect opt-in and local email rules</strong>
+          Follow beehiiv’s guidance and your jurisdiction. A warm “we’re moving homes” note beats a sudden blast from a new domain.
+        </li>
+        <li>
+          <strong>Send small tests first</strong>
+          Authenticate sending, then deliver to yourself and a few trusted inboxes before any mass send.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>
+          Ready to set up the new publication while you still finish Ghost exports?
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="paid">6. Paid members and Stripe</h2>
+      <p>This is the highest-risk part of a Ghost → beehiiv move. Verify current Stripe and beehiiv paid-subscription docs; do not invent a silent transfer.</p>
+      <ul>
+        <li><strong>Inventory active Ghost/Stripe subscriptions</strong> — product names, prices, renewal dates, comps.</li>
+        <li><strong>Choose a cutover policy</strong> — e.g. finish the current Ghost billing period, then invite members to re-subscribe on beehiiv; or offer a timed complimentary beehiiv paid period while people switch. Pick what you can support in support tickets.</li>
+        <li><strong>Communicate early and twice</strong> — why you’re moving, what happens to their access, and the exact re-subscribe link when ready.</li>
+        <li><strong>Cancel Ghost membership products only after</strong> beehiiv paid is live and you’ve handled the cohort that should not lose access mid-cycle.</li>
+        <li><strong>Keep Stripe access</strong> until refunds, disputes, and final invoices are settled.</li>
+      </ul>
+      <p>Related: <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">Start a paid newsletter on beehiiv</a>.</p>
+
+      <h2 id="rebuild">7. Rebuild content, forms, and growth</h2>
+      <ul>
+        <li><strong>Welcome / onboarding:</strong> Recreate a short welcome sequence in beehiiv — one clear first email often beats a complex Ghost membership drip you never maintained.</li>
+        <li><strong>Key posts:</strong> Republish evergreen issues worth keeping live; link an archive or keep the Ghost site read-only if URLs matter for SEO.</li>
+        <li><strong>Signup forms &amp; embeds:</strong> Replace Ghost portal/subscribe CTAs on any external sites, bios, and course thank-you pages.</li>
+        <li><strong>Referral / growth features:</strong> If growth was why you left Ghost, turn on beehiiv’s referral and related tools after the list is stable.</li>
+        <li><strong>Integrations:</strong> Rewire Zapier/Make/webhooks that pointed at Ghost member events.</li>
+      </ul>
+
+      <h2 id="dns">8. Domain, DNS, and branding</h2>
+      <ul>
+        <li>Add SPF/DKIM (and DMARC as recommended) for beehiiv’s sending domain at your DNS host.</li>
+        <li>If Ghost used the same root or subdomain for the site <em>and</em> email, plan carefully — site redirects and email auth can conflict if you rush DNS edits.</li>
+        <li>Update website CTAs, footers, and “subscribe” buttons away from Ghost portal links.</li>
+        <li>Keep Ghost paused-but-accessible during a short overlap for member exports and Stripe cleanup.</li>
+      </ul>
+
+      <h2 id="cutover">9. Cutover and communication</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce early</strong>
+          Tell free and paid members you’re moving email homes, what (if anything) they need to do, and that preferences/unsubscribes still work.
+        </li>
+        <li>
+          <strong>Stop dual-sending the same content</strong>
+          Pick a date. After cutover, Ghost is archive/membership wind-down only — not a second blast channel to the same people.
+        </li>
+        <li>
+          <strong>Send the first beehiiv issue</strong>
+          Include a short “you’re here now” note, how to update preferences, paid re-subscribe instructions if needed, and a reply-friendly support address.
+        </li>
+        <li>
+          <strong>Watch deliverability and support</strong>
+          Monitor bounces, complaints, and paid-access tickets; fix auth issues immediately; suppress hard bounces.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Member + unsubscribe/suppression exports saved offline</li>
+        <li>Content/JSON or post archive saved if you need it</li>
+        <li>Free list imported; must-have tags rebuilt</li>
+        <li>Paid/Stripe cutover policy decided and communicated</li>
+        <li>Sending domain authenticated on beehiiv</li>
+        <li>Welcome (and any critical) automations rebuilt — not assumed transferred</li>
+        <li>Site/forms/embeds pointed at beehiiv; Ghost site fate decided</li>
+        <li>Integrations rewired or intentionally dropped</li>
+        <li>Audience notified; Ghost dual-send stopped</li>
+        <li>First live beehiiv send tested</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If a newsletter-first stack is the goal — growth tools, ads/sponsorships, and simpler ops than running a CMS — beehiiv is the path this guide assumes.
+          Stay on Ghost when the owned publication website is non-negotiable.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/substack-to-beehiiv.html">Migrate Substack → beehiiv</a> ·
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">Start a paid newsletter on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, or Substack unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
