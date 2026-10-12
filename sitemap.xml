@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://tolmondh.github.io/which-newsletter/guides/</loc>
-    <lastmod>2026-10-01</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -105,6 +105,12 @@
   <url>
     <loc>https://tolmondh.github.io/which-newsletter/guides/beehiiv-monetization.html</loc>
     <lastmod>2026-10-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tolmondh.github.io/which-newsletter/guides/beehiiv-vs-mailerlite.html</loc>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
