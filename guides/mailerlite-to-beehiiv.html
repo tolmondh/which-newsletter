@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from MailerLite to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Step-by-step guide for moving a newsletter from MailerLite to beehiiv: export subscribers and suppressions, map groups and fields, rebuild automations and forms, authenticate DNS, and cut over cleanly.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/mailerlite-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from MailerLite to beehiiv</h1>
+      <p class="lede">
+        A practical cutover plan for creators moving a newsletter from MailerLite to beehiiv:
+        export, map groups and fields, rebuild what won’t transfer, and tell your list without chaos.
+        Confirm each step against current MailerLite and beehiiv help docs before you move a live audience.
+      </p>
+      <p class="meta">Guide outline · October 2026 · See also <a href="/which-newsletter/guides/beehiiv-vs-mailerlite.html">beehiiv vs MailerLite</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Inventory your MailerLite account</a></li>
+          <li><a href="#export">Export from MailerLite</a></li>
+          <li><a href="#map">Map groups, segments, and fields</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#rebuild">Rebuild automations, forms, and pages</a></li>
+          <li><a href="#paid">Paid newsletters and Stripe</a></li>
+          <li><a href="#dns">Domain, DNS, and sender reputation</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Export/import screens, plan limits, and feature gates change on both platforms. This is a process map, not a vendor guarantee. MailerLite’s marketing tooling (visual automations, landing pages, pop-ups, store integrations) does not “port” into beehiiv one-to-one, so plan rebuild time. beehiiv links below may earn a commission; MailerLite is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Evaluating beehiiv as your next home? You can set up a publication on the free Launch tier while you plan the move, then upgrade only when a feature you need requires it.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>
+        MailerLite is an affordable, all-round email marketing tool: forms, pop-ups, landing pages, automations, and campaigns.
+        beehiiv is built around the newsletter as the product: publishing, a hosted publication site and archive, referral and recommendation growth, and monetization through ads, Boosts, sponsorships, and paid subscriptions.
+      </p>
+      <p>Moving usually makes sense when:</p>
+      <ul>
+        <li>Your MailerLite account is mostly a regular newsletter, not store promos or lead-nurture funnels.</li>
+        <li>You keep hand-building newsletter features (web archive, referral rewards, sponsor slots) that beehiiv includes.</li>
+        <li>You want ads, Boosts, sponsorships, or paid subscriptions to become real revenue lines.</li>
+      </ul>
+      <p>Stay put if email mainly supports a shop or service, you depend on MailerLite’s store or site-builder integrations, or your small list works fine and switching would cost time without unlocking anything you’ll use. Still deciding? Read <a href="/which-newsletter/guides/beehiiv-vs-mailerlite.html">beehiiv vs MailerLite</a> first.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <p>Expect some friction. Don’t assume a clean lift-and-shift.</p>
+      <ul>
+        <li>
+          <strong>Automations don’t transfer.</strong>
+          MailerLite workflows (welcome series, triggers on group joins, conditional branches) stay in MailerLite. Rebuild only the flows you actually use.
+        </li>
+        <li>
+          <strong>Groups and segments need mapping.</strong>
+          MailerLite groups and segments won’t become beehiiv tags or segments automatically. Carry what you need as CSV columns or separate files and rebuild the useful ones.
+        </li>
+        <li>
+          <strong>Landing pages, pop-ups, and MailerLite-hosted sites stay behind.</strong>
+          Any page or form hosted by MailerLite needs a replacement: a beehiiv signup form or page, or your own site.
+        </li>
+        <li>
+          <strong>Campaign history and templates aren’t portable as-is.</strong>
+          Save copies of issues you want to keep, and redesign your main template in beehiiv rather than pasting old HTML.
+        </li>
+        <li>
+          <strong>Integrations need rewiring.</strong>
+          Store connections, Zapier/Make hooks, and site-builder embeds point at MailerLite today. Update or retire each one on purpose.
+        </li>
+        <li>
+          <strong>Suppressions still apply.</strong>
+          Unsubscribed, bounced, and complaint addresses must stay suppressed. Never re-permission people who opted out.
+        </li>
+      </ul>
+
+      <h2 id="inventory">3. Inventory your MailerLite account</h2>
+      <ol class="steps">
+        <li>
+          <strong>List what’s actually in use</strong>
+          Active groups, saved segments, custom fields, live automations, embedded forms and pop-ups, landing pages, and connected integrations.
+        </li>
+        <li>
+          <strong>Mark each item keep, rebuild, or drop</strong>
+          Many accounts carry old groups and paused workflows nobody touches. Migration is a good time to retire them.
+        </li>
+        <li>
+          <strong>Note anything paid or transactional</strong>
+          Paid newsletter subscriptions, digital product sales, or store receipts tied to MailerLite need their own plan (see <a href="#paid">section 8</a>).
+        </li>
+        <li>
+          <strong>Create the beehiiv publication</strong>
+          Set branding, sender name, reply-to address, and a welcome email before importing anyone.
+        </li>
+      </ol>
+
+      <h2 id="export">4. Export from MailerLite</h2>
+      <p>Typical path (verify in MailerLite’s current subscribers/export UI; older MailerLite Classic accounts may label things differently):</p>
+      <ul>
+        <li>Export <strong>active</strong> subscribers as CSV with the fields you need: email, name, signup date, and any custom fields you’ll keep.</li>
+        <li>Export <strong>unsubscribed, bounced, and junk/complaint</strong> contacts separately so they’re never imported as active.</li>
+        <li>If groups matter, export each important group separately or make sure group membership appears as a column.</li>
+        <li>Save copies of key campaign content and your welcome emails so you can rebuild them.</li>
+      </ul>
+      <p>Clean the CSV before import: normalize email casing, remove obvious junk rows and duplicates, and keep one clear status column. Store the raw exports offline as a backup.</p>
+
+      <h2 id="map">5. Map groups, segments, and fields</h2>
+      <p>Build a simple mapping table before you import. For example:</p>
+      <ul>
+        <li><strong>MailerLite group → beehiiv tag or custom field.</strong> Keep only groups you’ll actually target (e.g. “customers”, “workshop attendees”, “local readers”).</li>
+        <li><strong>MailerLite segment → rebuilt beehiiv segment.</strong> Segments are rules, not lists. Recreate the rule in beehiiv where an equivalent field exists; otherwise export the current members as a tag.</li>
+        <li><strong>Custom fields → beehiiv custom fields.</strong> Create the fields in beehiiv first so the importer can map them.</li>
+        <li><strong>Source tag.</strong> Add a tag like “migrated-mailerlite” so you can tell migrated readers from new signups later.</li>
+      </ul>
+
+      <h2 id="import">6. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Use beehiiv’s subscriber import</strong>
+          Upload the cleaned active CSV, map columns to fields, and apply your tags. Check beehiiv’s current docs for import limits or review steps on your plan.
+        </li>
+        <li>
+          <strong>Decide on the welcome email</strong>
+          Choose whether imported readers should get a welcome email. Usually a single “we’ve moved” note is better than putting everyone through a new-subscriber sequence.
+        </li>
+        <li>
+          <strong>Respect consent rules</strong>
+          Import only people who opted in, follow beehiiv’s import policy and the email laws where you and your readers live.
+        </li>
+        <li>
+          <strong>Spot-check counts</strong>
+          Compare the imported total and a few tagged records against your MailerLite export before sending anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>
+          Setting up the new publication while you finish exports and mapping?
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="rebuild">7. Rebuild automations, forms, and pages</h2>
+      <ul>
+        <li><strong>Welcome / onboarding:</strong> Recreate a short welcome flow in beehiiv. One strong first email plus a couple of follow-ups often beats a sprawling workflow nobody maintains. Check which automation features your beehiiv plan includes.</li>
+        <li><strong>Forms and pop-ups:</strong> Replace MailerLite embeds on your website, link-in-bio pages, and thank-you pages with beehiiv signup forms or links to your beehiiv publication.</li>
+        <li><strong>Landing pages:</strong> Point old MailerLite landing page links at your beehiiv publication or a page on your own site. Update any QR codes or printed links.</li>
+        <li><strong>Marketing workflows you still need:</strong> If you rely on store-triggered or multi-branch automations, decide honestly whether beehiiv covers them. If not, you may keep a separate tool for those flows and use beehiiv for the newsletter.</li>
+        <li><strong>Growth features:</strong> Once the list is stable, turn on beehiiv’s referral program and recommendations if they fit your plan. See <a href="/which-newsletter/guides/beehiiv-monetization.html">how to monetize a newsletter on beehiiv</a> for what to enable and when.</li>
+      </ul>
+
+      <h2 id="paid">8. Paid newsletters and Stripe</h2>
+      <p>If readers pay you through MailerLite’s paid newsletter or selling features (typically via Stripe), slow down here:</p>
+      <ul>
+        <li>Find out how your current subscriptions are billed and whether the Stripe account can connect to beehiiv. Check both vendors’ docs for what migrates and what doesn’t.</li>
+        <li>Don’t promise paying readers uninterrupted access until you’ve confirmed the billing path and tested it.</li>
+        <li>Avoid double-billing: make sure nobody gets charged by both systems after cutover.</li>
+        <li>Tell paid readers in plain language what changes for them, if anything, before you switch.</li>
+      </ul>
+      <p>Setting up paid tiers for the first time? See <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">start a paid newsletter on beehiiv</a>.</p>
+
+      <h2 id="dns">9. Domain, DNS, and sender reputation</h2>
+      <ul>
+        <li>Add the SPF/DKIM records beehiiv asks for (and a DMARC record if you don’t have one) at your DNS host.</li>
+        <li>If MailerLite authenticated the same domain, leave its records in place until cutover is finished, then remove the ones you no longer need. Watch for conflicting SPF records: a domain should publish a single SPF record.</li>
+        <li>Keep the same sender name and a familiar from-address so readers recognize you in the inbox.</li>
+        <li>For larger lists, consider sending the first beehiiv issues to your most engaged readers first, and check beehiiv’s guidance on warming up.</li>
+      </ul>
+
+      <h2 id="cutover">10. Cutover and communication</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce from MailerLite first (optional)</strong>
+          A short heads-up from your current sender that the newsletter is moving helps readers recognize the new emails.
+        </li>
+        <li>
+          <strong>Pick a cutover date and stop dual-sending</strong>
+          After that date, MailerLite is for archive and suppression reference only, not a second channel to the same people.
+        </li>
+        <li>
+          <strong>Send the first beehiiv issue</strong>
+          Include a brief “you’re in the right place” note, an easy unsubscribe, and a reply address for questions.
+        </li>
+        <li>
+          <strong>Watch the first few sends</strong>
+          Monitor bounces, complaints, and replies. Fix authentication issues right away and suppress hard bounces.
+        </li>
+        <li>
+          <strong>Downgrade MailerLite last</strong>
+          Keep the account (or full exports) until you’re confident nothing is missing, then downgrade or close it.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Active, unsubscribed, and bounced exports saved offline</li>
+        <li>Group/segment/field mapping table written down</li>
+        <li>Import complete, tagged “migrated-mailerlite”, counts spot-checked</li>
+        <li>Sending domain authenticated on beehiiv; single SPF record</li>
+        <li>Welcome and must-keep automations rebuilt, not assumed transferred</li>
+        <li>Forms, pop-ups, landing page links, and bios pointed at beehiiv</li>
+        <li>Integrations rewired or retired on purpose</li>
+        <li>Paid subscriber billing path confirmed (if applicable)</li>
+        <li>Readers notified; MailerLite dual-send stopped</li>
+        <li>First beehiiv issue tested and sent</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If a newsletter-first stack is the goal (built-in growth tools, ad and sponsor revenue, and a publication site), beehiiv is the path this guide assumes.
+          If you mainly need affordable marketing automation for a business, MailerLite may still be the better fit.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/beehiiv-vs-mailerlite.html">beehiiv vs MailerLite</a> ·
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/convertkit-to-beehiiv.html">Migrate ConvertKit / Kit → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, or MailerLite unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
