@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate from Buttondown to beehiiv | Which Newsletter</title>
+  <meta name="description" content="Step-by-step guide for moving a newsletter from Buttondown to beehiiv: export subscribers and archive, map tags and metadata, handle paid Stripe subscribers, redirect your archive, authenticate DNS, and cut over cleanly.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/buttondown-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Migrate from Buttondown to beehiiv</h1>
+      <p class="lede">
+        A practical cutover plan for writers moving a newsletter from Buttondown to beehiiv:
+        export subscribers and your archive, map tags and metadata, handle paid readers carefully, and keep old links working.
+        Confirm each step against current Buttondown and beehiiv help docs before you move a live audience.
+      </p>
+      <p class="meta">Guide outline · October 2026 · See also <a href="/which-newsletter/guides/beehiiv-vs-buttondown.html">beehiiv vs Buttondown</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if migration is worth it</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Inventory your Buttondown account</a></li>
+          <li><a href="#export">Export from Buttondown</a></li>
+          <li><a href="#map">Map tags, metadata, and status</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#archive">Archive, Markdown, and old links</a></li>
+          <li><a href="#paid">Paid subscribers and Stripe</a></li>
+          <li><a href="#dns">Domain, DNS, and sender reputation</a></li>
+          <li><a href="#cutover">Cutover and communication</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Export/import screens, plan limits, and feature gates change on both platforms. This is a process map, not a vendor guarantee. Buttondown’s Markdown-first writing flow, API-driven setups, and any custom automations won’t “port” into beehiiv one-to-one, so plan rebuild time. beehiiv links below may earn a commission; Buttondown is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Evaluating beehiiv as your next home? You can set up a publication on the free Launch tier while you plan the move, then upgrade only when a feature you need requires it.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if migration is worth it</h2>
+      <p>
+        Buttondown is a lean, Markdown-friendly newsletter tool that many indie writers and developers like for its simplicity and API.
+        beehiiv is built for growing and monetizing a newsletter: a hosted publication site and archive, referral and recommendation growth, and revenue through ads, Boosts, sponsorships, and paid subscriptions.
+      </p>
+      <p>Moving usually makes sense when:</p>
+      <ul>
+        <li>You want growth tools (referrals, recommendations) instead of building them yourself.</li>
+        <li>You want ad, Boost, or sponsorship revenue to become a real line item.</li>
+        <li>You’d rather use a visual editor and templates than hand-write Markdown and HTML each issue.</li>
+      </ul>
+      <p>Stay put if you love writing in Markdown, depend on Buttondown’s API or webhooks in custom tooling, or your list is small and happy and a move would cost time without unlocking anything you’ll use. Still deciding? Read <a href="/which-newsletter/guides/beehiiv-vs-buttondown.html">beehiiv vs Buttondown</a> first.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <p>Expect some friction. Don’t assume a clean lift-and-shift.</p>
+      <ul>
+        <li>
+          <strong>Your writing workflow changes.</strong>
+          If you draft in Markdown, test how your formatting, code blocks, and footnotes look in beehiiv’s editor before committing. Some styling may need manual cleanup.
+        </li>
+        <li>
+          <strong>Archive URLs change.</strong>
+          Posts on your Buttondown archive (or a custom domain pointed at it) will live at new beehiiv URLs. Plan redirects or at least link the old archive to the new one.
+        </li>
+        <li>
+          <strong>Tags and metadata need mapping.</strong>
+          Buttondown tags and custom metadata won’t become beehiiv tags or custom fields automatically. Carry what you need as CSV columns.
+        </li>
+        <li>
+          <strong>API scripts and webhooks stop working.</strong>
+          Anything that calls Buttondown’s API (signup forms, Zapier/Make hooks, static-site build steps) must be rewired to beehiiv or retired.
+        </li>
+        <li>
+          <strong>Paid subscriptions are the risky part.</strong>
+          Billing moves need care so nobody loses access or gets charged twice (see <a href="#paid">section 8</a>).
+        </li>
+        <li>
+          <strong>Suppressions still apply.</strong>
+          Unsubscribed and bounced addresses must stay suppressed. Never re-permission people who opted out.
+        </li>
+      </ul>
+
+      <h2 id="inventory">3. Inventory your Buttondown account</h2>
+      <ol class="steps">
+        <li>
+          <strong>List what’s actually in use</strong>
+          Subscriber tags, custom metadata fields, any automations or scheduled emails, embedded forms, your archive domain, API integrations, and paid tiers.
+        </li>
+        <li>
+          <strong>Mark each item keep, rebuild, or drop</strong>
+          Old tags and test integrations pile up. Migration is a good time to retire them.
+        </li>
+        <li>
+          <strong>Note everything tied to payments</strong>
+          Paid subscribers, coupons, comp subscriptions, and the Stripe account behind them.
+        </li>
+        <li>
+          <strong>Create the beehiiv publication</strong>
+          Set branding, sender name, reply-to address, and a welcome email before importing anyone.
+        </li>
+      </ol>
+
+      <h2 id="export">4. Export from Buttondown</h2>
+      <p>Typical path (verify in Buttondown’s current subscribers and settings screens, and its export docs):</p>
+      <ul>
+        <li>Export <strong>active</strong> subscribers as CSV with email, signup date, tags, and any metadata you’ll keep.</li>
+        <li>Export <strong>unsubscribed and bounced</strong> subscribers separately so they’re never imported as active.</li>
+        <li>Export or save your <strong>archive</strong> (past emails) so you have a backup and can republish selected posts.</li>
+        <li>Note which subscribers are <strong>paid, comped, or on trial</strong>; you’ll need that list for the billing step.</li>
+      </ul>
+      <p>Clean the CSV before import: normalize email casing, remove duplicates and obvious junk, and keep one clear status column. Store the raw exports offline as a backup.</p>
+
+      <h2 id="map">5. Map tags, metadata, and status</h2>
+      <p>Build a simple mapping table before you import. For example:</p>
+      <ul>
+        <li><strong>Buttondown tag → beehiiv tag or custom field.</strong> Keep only tags you’ll actually target.</li>
+        <li><strong>Metadata fields → beehiiv custom fields.</strong> Create the fields in beehiiv first so the importer can map them.</li>
+        <li><strong>Subscriber type → separate files.</strong> Keep free, paid, and comped readers in separate CSVs so the paid ones can follow the billing plan.</li>
+        <li><strong>Source tag.</strong> Add a tag like “migrated-buttondown” so you can tell migrated readers from new signups later.</li>
+      </ul>
+
+      <h2 id="import">6. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Use beehiiv’s subscriber import</strong>
+          Upload the cleaned free-subscriber CSV, map columns to fields, and apply your tags. Check beehiiv’s current docs for import limits or review steps on your plan.
+        </li>
+        <li>
+          <strong>Decide on the welcome email</strong>
+          Usually a single “we’ve moved” note is better than putting existing readers through a new-subscriber sequence.
+        </li>
+        <li>
+          <strong>Respect consent rules</strong>
+          Import only people who opted in, and follow beehiiv’s import policy and the email laws where you and your readers live.
+        </li>
+        <li>
+          <strong>Spot-check counts</strong>
+          Compare the imported total and a few tagged records against your Buttondown export before sending anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>
+          Setting up the new publication while you finish exports and mapping?
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="archive">7. Archive, Markdown, and old links</h2>
+      <ul>
+        <li><strong>Pick what to republish.</strong> You don’t have to bring every past issue. Your best evergreen posts are worth moving; check beehiiv’s docs for any post import options before copying by hand.</li>
+        <li><strong>Check formatting.</strong> Paste a few Markdown-heavy issues into beehiiv and fix headings, code, images, and footnotes before deciding on a bulk approach.</li>
+        <li><strong>Keep old links alive.</strong> If your archive sits on a custom domain, point it at beehiiv once the publication is ready, and redirect or link old post URLs where your setup allows. At minimum, leave a note on the old archive pointing to the new one.</li>
+        <li><strong>Update signup points.</strong> Replace Buttondown forms and links on your website, social bios, and any static-site templates with beehiiv forms or your publication link.</li>
+        <li><strong>Turn on growth features later.</strong> Once the list is stable, consider beehiiv’s referral program and recommendations if they fit your plan. See <a href="/which-newsletter/guides/beehiiv-monetization.html">how to monetize a newsletter on beehiiv</a>.</li>
+      </ul>
+
+      <h2 id="paid">8. Paid subscribers and Stripe</h2>
+      <p>If readers pay you through Buttondown (via Stripe), slow down here:</p>
+      <ul>
+        <li>Check both vendors’ current docs on whether your existing Stripe account and subscriptions can connect to beehiiv, and what does or doesn’t carry over.</li>
+        <li>Don’t promise paying readers uninterrupted access until you’ve confirmed the billing path and tested it with a real subscription.</li>
+        <li>Avoid double-billing: make sure nobody gets charged by both systems after cutover, and decide how to handle comps and trials.</li>
+        <li>Tell paid readers in plain language what changes for them, if anything, before you switch.</li>
+      </ul>
+      <p>Setting up paid tiers for the first time? See <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">start a paid newsletter on beehiiv</a>.</p>
+
+      <h2 id="dns">9. Domain, DNS, and sender reputation</h2>
+      <ul>
+        <li>Add the SPF/DKIM records beehiiv asks for (and a DMARC record if you don’t have one) at your DNS host.</li>
+        <li>If Buttondown authenticated the same sending domain, leave its records in place until cutover is finished, then remove the ones you no longer need. A domain should publish a single SPF record.</li>
+        <li>Keep the same sender name and a familiar from-address so readers recognize you in the inbox.</li>
+        <li>For larger lists, consider sending the first beehiiv issues to your most engaged readers first, and check beehiiv’s guidance on warming up.</li>
+      </ul>
+
+      <h2 id="cutover">10. Cutover and communication</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce from Buttondown first (optional)</strong>
+          A short heads-up from your current sender helps readers recognize the new emails.
+        </li>
+        <li>
+          <strong>Pick a cutover date and stop dual-sending</strong>
+          After that date, Buttondown is for archive and suppression reference only.
+        </li>
+        <li>
+          <strong>Send the first beehiiv issue</strong>
+          Include a brief “you’re in the right place” note, an easy unsubscribe, and a reply address for questions.
+        </li>
+        <li>
+          <strong>Watch the first few sends</strong>
+          Monitor bounces, complaints, and replies. Fix authentication issues right away and suppress hard bounces.
+        </li>
+        <li>
+          <strong>Close Buttondown last</strong>
+          Keep the account (or full exports) until paid billing, archive links, and integrations are confirmed, then downgrade or close it.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Active, unsubscribed, bounced, and paid exports saved offline</li>
+        <li>Archive backed up; evergreen posts chosen for republishing</li>
+        <li>Tag/metadata mapping table written down</li>
+        <li>Import complete, tagged “migrated-buttondown”, counts spot-checked</li>
+        <li>Sending domain authenticated on beehiiv; single SPF record</li>
+        <li>Archive domain and old links pointed or redirected</li>
+        <li>API scripts, webhooks, and forms rewired or retired</li>
+        <li>Paid subscriber billing path confirmed (if applicable)</li>
+        <li>Readers notified; Buttondown dual-send stopped</li>
+        <li>First beehiiv issue tested and sent</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If growth and monetization are the goal (referrals, recommendations, ad and sponsor revenue, and a publication site), beehiiv is the path this guide assumes.
+          If you mainly want a minimal, Markdown-first tool with a simple API, Buttondown may still be the better fit.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/beehiiv-vs-buttondown.html">beehiiv vs Buttondown</a> ·
+        <a href="/which-newsletter/guides/substack-to-beehiiv.html">Migrate Substack → beehiiv</a> ·
+        <a href="/which-newsletter/guides/mailerlite-to-beehiiv.html">Migrate MailerLite → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, or Buttondown unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
