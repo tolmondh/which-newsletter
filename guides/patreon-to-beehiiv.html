@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Move from Patreon to beehiiv (paid newsletter migration) | Which Newsletter</title>
+  <meta name="description" content="Process map for moving paid writing from Patreon to a beehiiv newsletter: decide what to move, map tiers to paid plans, export members, handle billing without double-charging, move posts, and communicate the switch.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/patreon-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <h1>Move from Patreon to beehiiv</h1>
+      <p class="lede">
+        A practical plan for writers who sell posts or updates on Patreon and want a newsletter-first home on beehiiv:
+        decide what to move, map tiers to paid plans, bring members over with consent, and switch billing without anyone being charged twice.
+        Confirm each step against current Patreon and beehiiv help docs before you touch a paying audience.
+      </p>
+      <p class="meta">Guide outline · October 2026 · See also <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">start a paid newsletter on beehiiv</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#options">Full move vs. run both</a></li>
+          <li><a href="#tiers">Map Patreon tiers to beehiiv plans</a></li>
+          <li><a href="#export">Export from Patreon</a></li>
+          <li><a href="#import">Import free readers into beehiiv</a></li>
+          <li><a href="#billing">Moving paying members</a></li>
+          <li><a href="#posts">Posts, perks, and links</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Announcement and cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Patreon and beehiiv change fees, export options, and payment features over time. This is a process map, not a vendor guarantee, and it is not legal or tax advice. Patreon payment details cannot be moved by you, so paying members will normally need to subscribe again on the new platform. beehiiv links below may earn a commission; Patreon is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>
+          Want to see how paid tiers would look before you commit? You can set up a beehiiv publication on the free Launch tier while you plan, then upgrade only when you need paid subscriptions or another gated feature.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        Patreon is a membership platform: fans back you on tiers and get posts, perks, and community access inside Patreon’s app and site.
+        beehiiv is a newsletter platform: your writing lands in readers’ inboxes, lives on your own publication site, and can earn through paid subscriptions, ads, Boosts, and sponsorships.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>Most of what you deliver is written posts, and readers would rather get them by email.</li>
+        <li>You want a free tier that grows an audience, with paid as an upgrade, not a paywall on everything.</li>
+        <li>You want ad, sponsor, or recommendation revenue alongside reader payments.</li>
+        <li>You want an email list and a site that you control, so discovery isn’t tied to one app.</li>
+      </ul>
+      <p>Stay on Patreon (or keep it alongside) if your value is mostly video, audio, merch, Discord roles, or community perks that beehiiv doesn’t replace, or if your members are happy and a forced re-signup would cost you more than it gains.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>Expect some paid churn.</strong> Every paying member has to take an action to keep supporting you on the new platform. Some won’t, even if they like your work. Plan for it rather than assuming everyone follows.</li>
+        <li><strong>Not every Patreon member opted into email.</strong> Having an address on Patreon doesn’t automatically mean consent to a separate newsletter. Check Patreon’s terms and your local email law before importing anyone.</li>
+        <li><strong>Perks don’t port.</strong> Discord roles, merch, early access in Patreon’s app, and community features need a new home or a sunset plan.</li>
+        <li><strong>Fees differ.</strong> Compare Patreon’s current fees with beehiiv’s plan cost plus payment processing for your real numbers. Don’t rely on old blog posts for either.</li>
+        <li><strong>Sales tax and VAT handling differs.</strong> Check how each platform handles tax for digital subscriptions where your readers live, and ask a tax professional if you’re unsure.</li>
+      </ul>
+
+      <h2 id="options">3. Full move vs. run both</h2>
+      <p>You don’t have to shut Patreon down on day one. Common patterns:</p>
+      <ul>
+        <li><strong>Newsletter in front, Patreon behind.</strong> Launch a free beehiiv newsletter for reach and keep Patreon for existing paying members. Lowest risk, two systems to manage.</li>
+        <li><strong>Gradual move.</strong> Open paid tiers on beehiiv, invite new supporters there, and let Patreon wind down naturally as members choose to switch.</li>
+        <li><strong>Hard cutover.</strong> Pick a date, move everything, and pause or close Patreon. Cleanest for you, highest churn risk.</li>
+      </ul>
+      <p>If you aren’t sure, start with the first pattern. You can always tighten later.</p>
+
+      <h2 id="tiers">4. Map Patreon tiers to beehiiv plans</h2>
+      <ol class="steps">
+        <li>
+          <strong>List every tier and what it really delivers</strong>
+          Price, member count, post frequency, and each perk. Note which perks are email-friendly (posts, essays, early drafts) and which aren’t.
+        </li>
+        <li>
+          <strong>Simplify</strong>
+          Many writers collapse several Patreon tiers into a free tier plus one or two paid tiers on beehiiv. Fewer choices are easier to explain during a switch.
+        </li>
+        <li>
+          <strong>Decide on monthly and annual pricing</strong>
+          Check beehiiv’s current paid-subscription options and which plan they require.
+        </li>
+        <li>
+          <strong>Decide what happens to legacy perks</strong>
+          Keep, replace, or retire each one, and say so plainly in your announcement.
+        </li>
+      </ol>
+      <p>New to paid tiers on beehiiv? See <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">start a paid newsletter on beehiiv</a> and <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing explained</a>.</p>
+
+      <h2 id="export">5. Export from Patreon</h2>
+      <p>Typical path (verify in Patreon’s current creator tools and help docs):</p>
+      <ul>
+        <li>Download your <strong>member/audience list</strong> as CSV with names, emails, tier, status, and pledge history where available.</li>
+        <li>Split it into <strong>active paying</strong>, <strong>free followers</strong>, and <strong>former members</strong>. Treat these groups differently.</li>
+        <li>Back up your <strong>posts</strong>: copy or save the ones you’ll republish, along with images and attachments.</li>
+        <li>Store all raw exports offline before you change anything.</li>
+      </ul>
+
+      <h2 id="import">6. Import free readers into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email.
+        </li>
+        <li>
+          <strong>Import only people with clear consent</strong>
+          If consent is unclear, invite people to subscribe with a link instead of importing them. A smaller, willing list delivers better than a large, surprised one.
+        </li>
+        <li>
+          <strong>Tag the source</strong>
+          Add a tag like “from-patreon” (and the old tier as a custom field) so you can target a “you’re in the right place” note later.
+        </li>
+        <li>
+          <strong>Spot-check counts</strong>
+          Compare imported totals against your export before sending.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication and paid tiers while you sort the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="billing">7. Moving paying members</h2>
+      <p>This is the step to slow down on.</p>
+      <ul>
+        <li><strong>Plan on members re-subscribing.</strong> Patreon handles its own billing, so card details stay with Patreon. Members will generally need to start a new paid subscription on beehiiv.</li>
+        <li><strong>Avoid double charges.</strong> Give members a clear order: subscribe on beehiiv, then cancel on Patreon (or you pause or end the tier on Patreon on a set date). Check Patreon’s current options for pausing billing or archiving tiers.</li>
+        <li><strong>Honor what they already paid for.</strong> Consider a free period or comped access on beehiiv for members whose Patreon month overlaps the switch. Check beehiiv’s docs for comps, trials, or discount options on your plan.</li>
+        <li><strong>Test the paid flow yourself</strong> with a real subscription before you announce it.</li>
+        <li><strong>Keep a support path.</strong> A reply-to address and a short FAQ cut down on confused members.</li>
+      </ul>
+
+      <h2 id="posts">8. Posts, perks, and links</h2>
+      <ul>
+        <li><strong>Republish selectively.</strong> Move your best evergreen posts to beehiiv (public ones help search and signups; members-only ones can sit behind the paywall).</li>
+        <li><strong>Rehome or retire perks.</strong> Decide what happens to Discord access, downloads, and merch, and update your tier descriptions to match.</li>
+        <li><strong>Update every link.</strong> Social bios, YouTube descriptions, your website, and pinned posts should point to your beehiiv signup page instead of Patreon.</li>
+        <li><strong>Leave a pointer on Patreon.</strong> A pinned public post explaining where to find you keeps late readers from getting lost.</li>
+        <li><strong>Add growth features later.</strong> Once the list is stable, look at referrals and recommendations. See <a href="/which-newsletter/guides/beehiiv-monetization.html">how to monetize a newsletter on beehiiv</a>.</li>
+      </ul>
+
+      <h2 id="dns">9. Domain and sending setup</h2>
+      <ul>
+        <li>If you have your own domain, add the SPF/DKIM records beehiiv asks for, plus a DMARC record if you don’t already have one. Keep a single SPF record per domain.</li>
+        <li>Use a sender name readers already know from Patreon.</li>
+        <li>For larger lists, send the first issues to your most engaged readers first and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">10. Announcement and cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Announce on Patreon first</strong>
+          Explain why, what changes, what members get, and the exact steps and dates. Give at least one full billing cycle of notice if you can.
+        </li>
+        <li>
+          <strong>Send a reminder before the date</strong>
+          Include the beehiiv link and the cancel-on-Patreon step.
+        </li>
+        <li>
+          <strong>Switch</strong>
+          Pause or archive Patreon tiers on the date you announced, and start publishing on beehiiv.
+        </li>
+        <li>
+          <strong>Watch the first few weeks</strong>
+          Track who has re-subscribed, answer replies, and send one polite nudge to members who haven’t moved yet.
+        </li>
+        <li>
+          <strong>Close Patreon last</strong>
+          Keep the account until billing has fully stopped and your exports are safe.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Decision made: full move, gradual move, or run both</li>
+        <li>Tier-to-plan mapping and perk plan written down</li>
+        <li>Member list and posts exported and backed up offline</li>
+        <li>Free readers imported with consent and tagged “from-patreon”</li>
+        <li>beehiiv paid tiers live and tested with a real subscription</li>
+        <li>Billing order communicated; no member charged twice</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+        <li>Links in bios, site, and pinned posts updated</li>
+        <li>Announcement and reminder sent; Patreon tiers paused on schedule</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>
+          If your work is mostly writing and you want email reach, a free tier, and paid plans alongside ads and sponsorships, beehiiv is the path this guide assumes.
+          If your members mainly come for video, community, or merch perks, Patreon may still be the better home.
+        </p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">Start a paid newsletter on beehiiv</a> ·
+        <a href="/which-newsletter/guides/substack-to-beehiiv.html">Migrate Substack → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, or Patreon unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
