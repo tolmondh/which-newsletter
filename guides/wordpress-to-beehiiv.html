@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Move a WordPress newsletter to beehiiv (Jetpack, MailPoet, plugins) | Which Newsletter</title>
+  <meta name="description" content="Process map for moving email subscribers and newsletter posts from WordPress (Jetpack subscriptions, MailPoet, or another plugin) to beehiiv: keep or retire the blog, export subscribers with consent, swap signup forms, set up sending, and cut over.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/wordpress-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main id="main">
+    <div class="wrap">
+      <h1>Move a WordPress newsletter to beehiiv</h1>
+      <p class="lede">
+        A practical plan for site owners who send email from WordPress today, through Jetpack subscriptions, MailPoet, or another newsletter plugin, and want a dedicated newsletter platform:
+        decide what happens to the blog, export subscribers with consent, swap your signup forms, and cut over without losing readers.
+        Confirm each step against current WordPress plugin docs and beehiiv help docs before you change anything.
+      </p>
+      <p class="meta">Guide outline · October 2026 · See also <a href="/which-newsletter/guides/substack-alternatives.html">Substack alternatives</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#options">Keep the blog, or move everything</a></li>
+          <li><a href="#export">Export subscribers from WordPress</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#forms">Swap signup forms</a></li>
+          <li><a href="#posts">Posts, archive, and SEO</a></li>
+          <li><a href="#paid">Paid members and plugins</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> WordPress plugins and beehiiv change their export options, features, and pricing over time, and setups vary a lot from site to site. This is a process map, not a vendor guarantee, and it is not legal advice. beehiiv links below may earn a commission; WordPress, Jetpack, and MailPoet are mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>You can set up a beehiiv publication on the free Launch tier while you plan the move, then upgrade only when you need a paid feature.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        On WordPress, your newsletter is usually a plugin bolted onto a website: it emails new posts or campaigns to subscribers, and sending may run through the plugin’s own service, your host, or a separate email provider.
+        beehiiv is built around the newsletter itself, with its own publication site, sending, analytics, and growth and monetization tools such as referrals, recommendations, ads, and paid subscriptions.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>The newsletter has become the main thing, and the website mostly exists to collect signups.</li>
+        <li>You’re tired of maintaining plugins, sending limits, or deliverability fixes on your host.</li>
+        <li>You want built-in growth tools or newsletter revenue options rather than assembling them from several plugins.</li>
+        <li>You want clearer email analytics than your current plugin gives you.</li>
+      </ul>
+      <p>Stay on WordPress if your site does a lot beyond the newsletter (a store, memberships, courses, custom pages) and the email part already works, or if full control of your own hosting matters more to you than convenience.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>“Subscribers” can mean different things.</strong> Jetpack, MailPoet, and other plugins each store subscribers their own way, and some lists mix confirmed email subscribers with WordPress user accounts or commenters. Only move people who actually signed up for email.</li>
+        <li><strong>Automations don’t port.</strong> Welcome emails, post notifications, and sequences need to be rebuilt in beehiiv.</li>
+        <li><strong>Your blog SEO lives on WordPress.</strong> Moving posts to a new site can affect search traffic if you don’t plan redirects. Many people keep the blog where it is.</li>
+        <li><strong>Paid members need care.</strong> If you charge through a WordPress membership plugin, billing usually can’t just be copied over. See <a href="#paid">section 8</a>.</li>
+        <li><strong>Costs differ.</strong> Compare what you pay now (plugin licenses, sending service, hosting) with beehiiv’s current plans for your list size. Check today’s pricing pages, not old blog posts.</li>
+      </ul>
+
+      <h2 id="options">3. Keep the blog, or move everything</h2>
+      <p>You don’t have to choose all or nothing. Common patterns:</p>
+      <ul>
+        <li><strong>Blog stays, newsletter moves.</strong> WordPress keeps hosting your site and posts; beehiiv handles signups and sending. Lowest SEO risk, and the most common choice.</li>
+        <li><strong>Newsletter-first.</strong> beehiiv becomes your main publication, and WordPress is reduced to a few static pages or retired over time.</li>
+        <li><strong>Full move.</strong> Posts, subscribers, and the domain all go to beehiiv, with redirects from old WordPress URLs. Cleanest, most work, highest SEO risk.</li>
+      </ul>
+      <p>If you aren’t sure, start with the first pattern. You can move more later.</p>
+
+      <h2 id="export">4. Export subscribers from WordPress</h2>
+      <p>Typical paths (verify in your plugin’s current docs and admin screens):</p>
+      <ul>
+        <li><strong>Jetpack subscriptions:</strong> look for the subscriber list and export option in your Jetpack or WordPress.com dashboard.</li>
+        <li><strong>MailPoet:</strong> use its subscriber export to download a CSV, filtered by list if you have several.</li>
+        <li><strong>Other plugins or a connected provider:</strong> export from wherever the list actually lives. If WordPress forms feed Mailchimp or MailerLite, export from that provider instead (see <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Mailchimp → beehiiv</a> or <a href="/which-newsletter/guides/mailerlite-to-beehiiv.html">MailerLite → beehiiv</a>).</li>
+      </ul>
+      <p>Then clean the file:</p>
+      <ul>
+        <li>Keep only <strong>confirmed, subscribed</strong> addresses. Leave out unsubscribed, bounced, and unconfirmed contacts.</li>
+        <li>Don’t pull in WordPress user accounts or commenters who never signed up for email.</li>
+        <li>Note the signup date and any list or tag so you can keep that context.</li>
+        <li>Store the raw export offline before you change anything.</li>
+      </ul>
+
+      <h2 id="import">5. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email that mentions your site so readers recognize you.
+        </li>
+        <li>
+          <strong>Import the cleaned CSV</strong>
+          Follow beehiiv’s current import steps and any review it requires for larger lists.
+        </li>
+        <li>
+          <strong>Tag the source</strong>
+          Add a tag like “from-wordpress” (and the old list name as a custom field) so you can segment later.
+        </li>
+        <li>
+          <strong>Spot-check counts</strong>
+          Compare imported totals with your cleaned export before you send anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication while you clean the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="forms">6. Swap signup forms</h2>
+      <ul>
+        <li>Replace the plugin’s signup forms and widgets with a beehiiv embed form or a link to your beehiiv signup page. Check beehiiv’s docs for current embed options on your plan.</li>
+        <li>Update every place people subscribe: sidebar, footer, end-of-post boxes, pop-ups, and any landing pages.</li>
+        <li>Turn off the old plugin’s post notifications so readers don’t get two emails for one post.</li>
+        <li>Test a signup yourself, from the form to the welcome email.</li>
+      </ul>
+
+      <h2 id="posts">7. Posts, archive, and SEO</h2>
+      <ul>
+        <li><strong>If the blog stays,</strong> leave posts where they are and link to them from your newsletter issues.</li>
+        <li><strong>If you move posts,</strong> check beehiiv’s current import options for existing content, or republish your best evergreen pieces by hand.</li>
+        <li><strong>Redirect old URLs</strong> to their new homes if you retire WordPress pages, so search engines and old links don’t hit dead ends.</li>
+        <li><strong>Keep a pointer</strong> on the old site, such as a short “the newsletter has moved” note with the new signup link.</li>
+      </ul>
+
+      <h2 id="paid">8. Paid members and plugins</h2>
+      <p>If you sell subscriptions through a WordPress membership plugin, slow down here.</p>
+      <ul>
+        <li>Find out where payments actually run (often Stripe or PayPal through the plugin) and whether card details can move. In many setups they can’t, so members will need to subscribe again on beehiiv.</li>
+        <li>Give members a clear order: subscribe on beehiiv first, then cancel the old plan (or you end it on a set date), so nobody is charged twice.</li>
+        <li>Consider comped or free access on beehiiv for members whose current period overlaps the switch. Check beehiiv’s docs for what your plan supports.</li>
+        <li>New to paid on beehiiv? See <a href="/which-newsletter/guides/start-paid-newsletter-beehiiv.html">start a paid newsletter on beehiiv</a>.</li>
+      </ul>
+
+      <h2 id="dns">9. Domain and sending setup</h2>
+      <ul>
+        <li>If you send from your own domain, add the SPF/DKIM records beehiiv asks for, plus a DMARC record if you don’t already have one. Keep a single SPF record per domain, and remove records for the old sending service only after the switch.</li>
+        <li>Use the sender name readers already know from your site.</li>
+        <li>For larger lists, send first to your most engaged readers and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">10. Cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Send a heads-up from the old system</strong>
+          Tell readers the newsletter is moving, what changes, and what sender name to expect.
+        </li>
+        <li>
+          <strong>Final export</strong>
+          Export again right before the switch to catch recent signups and unsubscribes.
+        </li>
+        <li>
+          <strong>Switch forms and pause the plugin’s emails</strong>
+          Do both on the same day so no new signups land in the old list.
+        </li>
+        <li>
+          <strong>Send your first beehiiv issue</strong>
+          Watch opens, bounces, and replies for the first few sends.
+        </li>
+        <li>
+          <strong>Retire the old plugin last</strong>
+          Deactivate it only after you’ve confirmed nothing else on the site depends on it and your exports are safe.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Decision made: blog stays, newsletter-first, or full move</li>
+        <li>Subscriber list exported, cleaned to confirmed subscribers, and backed up offline</li>
+        <li>Imported into beehiiv and tagged “from-wordpress”</li>
+        <li>Welcome email and any automations rebuilt</li>
+        <li>All signup forms swapped and tested</li>
+        <li>Old post notifications turned off (no double emails)</li>
+        <li>Paid members given a clear switch path, if you have any</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+        <li>Redirects in place for any retired URLs</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>If the newsletter has outgrown its plugin and you want sending, growth, and monetization in one place, beehiiv is the path this guide assumes. If WordPress email already works and your site does much more than send a newsletter, staying put may be the better call.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-vs-ghost.html">beehiiv vs Ghost</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, Patreon, WordPress, Jetpack, or MailPoet unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
