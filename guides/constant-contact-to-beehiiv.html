@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate Constant Contact to beehiiv: contacts, lists, forms, and cutover | Which Newsletter</title>
+  <meta name="description" content="Process map for moving a newsletter from Constant Contact to beehiiv: decide if it fits, export only subscribed contacts, map lists and tags, rebuild automations, swap signup forms, authenticate your domain, and cut over.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/constant-contact-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main id="main">
+    <div class="wrap">
+      <h1>Migrate Constant Contact to beehiiv</h1>
+      <p class="lede">
+        A practical plan for small businesses, nonprofits, and creators who send a newsletter from Constant Contact and want a platform built around the newsletter itself:
+        decide whether the move fits, export only people who are still subscribed, map your lists, rebuild what doesn’t transfer, and cut over without confusing readers.
+        Confirm each step against current Constant Contact and beehiiv help docs before you change anything.
+      </p>
+      <p class="meta">Guide outline · November 2026 · See also <a href="/which-newsletter/guides/beehiiv-vs-mailchimp.html">beehiiv vs Mailchimp</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Take inventory first</a></li>
+          <li><a href="#export">Export contacts from Constant Contact</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#lists">Lists, tags, and segments</a></li>
+          <li><a href="#automations">Automations and templates</a></li>
+          <li><a href="#forms">Swap signup forms</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Constant Contact and beehiiv change their export options, features, and pricing over time. This is a process map, not a vendor guarantee, and it is not legal advice. beehiiv links below may earn a commission; Constant Contact is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>You can set up a beehiiv publication on the free Launch tier while you plan the move, then upgrade only when you need a paid feature.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        Constant Contact is a general email marketing tool aimed at small businesses and organizations: promotional campaigns, event invitations, contact management, and related marketing features.
+        beehiiv is built around publishing a newsletter, with a hosted publication site and web archive, plus growth and monetization tools such as referrals, recommendations, ads, and paid subscriptions.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>Most of what you send is a recurring newsletter, not sales promotions or event invites.</li>
+        <li>You want each issue to live on the web as a post people can find and share.</li>
+        <li>You want built-in ways to grow the list or earn from it, rather than only sending to the contacts you already have.</li>
+        <li>Your current plan’s cost no longer matches how you actually use it. Compare both vendors’ current pricing pages for your list size.</li>
+      </ul>
+      <p>Stay on Constant Contact if you rely heavily on features beehiiv doesn’t center on, such as event registration, e-commerce or point-of-sale integrations, SMS, or a CRM-style contact history your team uses daily. Some businesses keep Constant Contact for promotions and use beehiiv only for the newsletter.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>Unsubscribes must stay unsubscribed.</strong> Export only contacts whose email status is subscribed. Never re-add people who unsubscribed, bounced, or were removed.</li>
+        <li><strong>Automations don’t port.</strong> Welcome series, birthday or anniversary emails, and other automated flows need to be rebuilt by hand in beehiiv, if beehiiv supports them on your plan.</li>
+        <li><strong>Templates don’t port.</strong> You’ll rebuild your look in beehiiv’s editor. Plan an hour or two for a clean template.</li>
+        <li><strong>History stays behind.</strong> Past campaign reports and engagement history generally don’t transfer, so download any reports you want to keep.</li>
+        <li><strong>Imports may be reviewed.</strong> beehiiv may review larger imports; follow its current import guidance and expect a short wait.</li>
+      </ul>
+
+      <h2 id="inventory">3. Take inventory first</h2>
+      <p>Before you export anything, write down:</p>
+      <ul>
+        <li>Every list you send to, and which ones are really the newsletter versus promotions or one-off events.</li>
+        <li>Any tags or custom fields you actually use for targeting.</li>
+        <li>Every active automation and what it sends.</li>
+        <li>Every place people sign up: website forms, pop-ups, landing pages, social profiles, in-store or event sign-up sheets, and integrations that add contacts automatically.</li>
+        <li>Which domain you send from, and who controls its DNS.</li>
+      </ul>
+
+      <h2 id="export">4. Export contacts from Constant Contact</h2>
+      <p>Constant Contact lets you export contacts to a spreadsheet file from the Contacts area. Check its current help docs for the exact steps and which fields you can include.</p>
+      <ul>
+        <li>Export the newsletter lists you decided to move, with email status, list membership, and the custom fields you use.</li>
+        <li>Filter the file down to <strong>subscribed</strong> contacts only. Leave out unsubscribed, bounced, and removed contacts.</li>
+        <li>Keep a column for the original list name so you can tag it later.</li>
+        <li>Store the raw export somewhere offline and private before you change anything; it contains personal data.</li>
+      </ul>
+
+      <h2 id="import">5. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email that mentions your business name so readers recognize you.
+        </li>
+        <li>
+          <strong>Import the cleaned CSV</strong>
+          Follow beehiiv’s current import steps and any review it requires.
+        </li>
+        <li>
+          <strong>Tag the source</strong>
+          Add a tag like “from-constant-contact”, and carry the old list name over as a custom field or tag.
+        </li>
+        <li>
+          <strong>Spot-check counts</strong>
+          Compare imported totals with your cleaned export before you send anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication while you clean the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="lists">6. Lists, tags, and segments</h2>
+      <p>Constant Contact organizes people into lists, while beehiiv treats your audience as one publication’s subscribers that you can segment. A simple mapping:</p>
+      <ul>
+        <li>One main newsletter list becomes your beehiiv subscriber base.</li>
+        <li>Extra lists you still need become tags or custom fields, then segments in beehiiv.</li>
+        <li>Lists you only used for one-off events or promotions can stay behind or be archived.</li>
+      </ul>
+      <p>If someone is on several lists, deduplicate by email so they come across once with all the right tags.</p>
+
+      <h2 id="automations">7. Automations and templates</h2>
+      <ul>
+        <li>Rebuild the welcome email first; it’s what every new subscriber sees.</li>
+        <li>Recreate only the automations that still earn their keep. Check beehiiv’s docs for what automation features your plan includes.</li>
+        <li>Rebuild one clean issue template with your logo, colors, and footer, including the physical mailing address that anti-spam rules expect in commercial email.</li>
+      </ul>
+
+      <h2 id="forms">8. Swap signup forms</h2>
+      <ul>
+        <li>Replace Constant Contact signup forms on your website with a beehiiv embed form or a link to your beehiiv signup page.</li>
+        <li>Update pop-ups, landing pages, social profile links, and email signatures.</li>
+        <li>Disconnect or redirect any integrations that still add contacts to Constant Contact, so new signups don’t land in the old account.</li>
+        <li>Test a signup yourself, from the form to the welcome email.</li>
+      </ul>
+
+      <h2 id="dns">9. Domain and sending setup</h2>
+      <ul>
+        <li>If you send from your own domain, add the SPF/DKIM records beehiiv asks for, plus a DMARC record if you don’t have one. Keep a single SPF record per domain.</li>
+        <li>Remove the old provider’s authentication records only after you’ve stopped sending from Constant Contact.</li>
+        <li>Use the same sender name readers already know.</li>
+        <li>For larger lists, send to your most engaged readers first and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">10. Cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Send a heads-up from Constant Contact</strong>
+          Tell readers the newsletter is moving, when, and what sender name to expect.
+        </li>
+        <li>
+          <strong>Final export</strong>
+          Export again right before the switch to catch recent signups and unsubscribes.
+        </li>
+        <li>
+          <strong>Switch forms the same day</strong>
+          So no new signups land in the old account.
+        </li>
+        <li>
+          <strong>Send your first beehiiv issue</strong>
+          Watch opens, bounces, and replies for the first few sends.
+        </li>
+        <li>
+          <strong>Downgrade or cancel last</strong>
+          Keep the old account until your exports and reports are saved and nothing still depends on it. Check Constant Contact’s current billing terms before you cancel.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Lists, automations, forms, and integrations inventoried</li>
+        <li>Contacts exported, filtered to subscribed only, deduplicated, and backed up offline</li>
+        <li>Imported into beehiiv and tagged “from-constant-contact”</li>
+        <li>Welcome email, template, and needed automations rebuilt</li>
+        <li>All signup forms and integrations switched and tested</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+        <li>Reports you want to keep downloaded before canceling</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>If your Constant Contact sends are really a newsletter and you want web posts, growth, and monetization tools in one place, beehiiv is the path this guide assumes. If you depend on events, SMS, or e-commerce marketing, staying put or running both may be the better call.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-vs-mailchimp.html">beehiiv vs Mailchimp</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, Patreon, WordPress, Jetpack, MailPoet, or Constant Contact unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
