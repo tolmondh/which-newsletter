@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate AWeber to beehiiv: subscribers, lists, follow-ups, and cutover | Which Newsletter</title>
+  <meta name="description" content="Process map for moving a newsletter from AWeber to beehiiv: decide if it fits, export only Currently Subscribed people, leave pending and unsubscribed contacts behind, merge lists into tags, rebuild follow-ups and forms, and cut over.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/aweber-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main id="main">
+    <div class="wrap">
+      <h1>Migrate AWeber to beehiiv</h1>
+      <p class="lede">
+        A practical plan for creators and small businesses who send a newsletter from AWeber and want a platform built around publishing it:
+        decide whether the move fits, export only people who are currently subscribed, merge your lists, rebuild follow-up emails and forms, and cut over without confusing readers.
+        Confirm each step against current AWeber and beehiiv help docs before you change anything.
+      </p>
+      <p class="affiliate-notice"><strong>Commission notice:</strong> If you sign up through links on this page, I may earn a commission at no cost to you. It doesn't change what I recommend. <a href="/which-newsletter/disclosure.html">Details</a>.</p>
+      <p class="meta">Guide outline · November 2026 · See also <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Take inventory first</a></li>
+          <li><a href="#export">Export subscribers from AWeber</a></li>
+          <li><a href="#status">Sort by subscriber status</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#lists">Lists, tags, and segments</a></li>
+          <li><a href="#followups">Follow-up series and templates</a></li>
+          <li><a href="#forms">Swap signup forms</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> AWeber and beehiiv change their export options, features, and pricing over time. This is a process map, not a vendor guarantee, and it is not legal advice. beehiiv links below may earn a commission; AWeber is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>You can set up a beehiiv publication on the free Launch tier while you plan the move, then upgrade only when you need a paid feature.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        AWeber is a long-running email marketing tool known for autoresponder follow-up series, landing pages, and list-based broadcasts.
+        beehiiv is built around publishing a newsletter, with a hosted publication site and web archive, plus growth and monetization tools such as referrals, recommendations, ads, and paid subscriptions.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>Your main email is a recurring newsletter rather than a long automated sales sequence.</li>
+        <li>You want each issue published on the web as a post people can find, share, and subscribe from.</li>
+        <li>You want built-in ways to grow the list or earn from it, rather than only mailing the people you already have.</li>
+        <li>You’re paying for several AWeber lists that are really one audience. Compare both vendors’ current pricing pages for your list size.</li>
+      </ul>
+      <p>Stay on AWeber if your business runs on complex follow-up funnels, AWeber’s e-commerce or landing page features, or integrations that only connect to AWeber. Some people keep AWeber for funnels and move only the newsletter to beehiiv.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>Unsubscribes must stay unsubscribed.</strong> AWeber keeps unsubscribed people on your list with an “unsubscribed” status, so an unfiltered export can include them. Never import them as active subscribers.</li>
+        <li><strong>Pending people never confirmed.</strong> If you use confirmed opt-in, pending subscribers never clicked the confirmation link. Leave them behind.</li>
+        <li><strong>Follow-up series don’t port.</strong> Autoresponder sequences need to be rebuilt by hand in beehiiv, if beehiiv supports what you need on your plan.</li>
+        <li><strong>Templates and history stay behind.</strong> You’ll rebuild your design in beehiiv’s editor, and past reports generally don’t transfer, so download anything you want to keep.</li>
+        <li><strong>Imports may be reviewed.</strong> beehiiv may review larger imports; follow its current import guidance and expect a short wait.</li>
+      </ul>
+
+      <h2 id="inventory">3. Take inventory first</h2>
+      <p>Before you export anything, write down:</p>
+      <ul>
+        <li>Every AWeber list, and which ones are the newsletter versus lead magnets, old launches, or tests.</li>
+        <li>Tags and custom fields you actually use for targeting.</li>
+        <li>Every follow-up series and campaign, with what each email does.</li>
+        <li>Every place people sign up: web forms, landing pages, pop-ups, link-in-bio pages, and integrations that add subscribers automatically.</li>
+        <li>Which domain you send from, and who controls its DNS.</li>
+      </ul>
+
+      <h2 id="export">4. Export subscribers from AWeber</h2>
+      <p>AWeber’s help docs describe two routes. Check its current <a href="https://docs.aweber.com/subscriber-management/subscribers/how-do-i-export-my-subscribers" target="_blank" rel="noopener">export help article</a> for the exact steps.</p>
+      <ul>
+        <li><strong>Per list:</strong> open the Subscribers page for a list, apply the <strong>Currently Subscribed</strong> filter, and use Export CSV. AWeber exports what the current filter or search shows, so the filter decides what’s in the file.</li>
+        <li><strong>Whole account:</strong> the Backup Data feature builds a zip of all lists and messages and emails you when it’s ready. Useful as an offline backup before you change anything.</li>
+        <li>Repeat the per-list export for each newsletter list you decided to move, and keep the list name with each file.</li>
+        <li>Store the raw exports somewhere offline and private; they contain personal data.</li>
+      </ul>
+
+      <h2 id="status">5. Sort by subscriber status</h2>
+      <p>Before importing, look at the status column in your own file, since column names can vary:</p>
+      <ul>
+        <li><strong>Subscribed:</strong> import as your audience.</li>
+        <li><strong>Unsubscribed:</strong> never import as active. Keep them in a separate file so they can’t be re-added by accident.</li>
+        <li><strong>Pending or unconfirmed:</strong> leave behind.</li>
+        <li><strong>Undeliverable or bounced:</strong> leave behind.</li>
+      </ul>
+
+      <h2 id="import">6. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email that names your newsletter so readers recognize you.
+        </li>
+        <li>
+          <strong>Merge and deduplicate</strong>
+          Combine your cleaned list files and deduplicate by email, keeping the original list names as a column.
+        </li>
+        <li>
+          <strong>Import the cleaned CSV</strong>
+          Follow beehiiv’s current import steps and any review it requires.
+        </li>
+        <li>
+          <strong>Tag the source and spot-check</strong>
+          Add a tag like “from-aweber”, then compare imported totals with your cleaned file before you send anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication while you clean the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="lists">7. Lists, tags, and segments</h2>
+      <p>AWeber organizes people into separate lists, and the same person can sit on several. beehiiv treats your audience as one publication’s subscribers that you segment. A simple mapping:</p>
+      <ul>
+        <li>Your main newsletter list becomes the beehiiv subscriber base.</li>
+        <li>Other lists you still need, such as a lead magnet list, become tags or custom fields, then segments.</li>
+        <li>Old launch or test lists can stay behind.</li>
+      </ul>
+
+      <h2 id="followups">8. Follow-up series and templates</h2>
+      <ul>
+        <li>Rebuild the welcome email first; every new subscriber sees it.</li>
+        <li>Recreate only the follow-up emails that still earn their keep. Check beehiiv’s docs for what automation features your plan includes.</li>
+        <li>Rebuild one clean issue template with your logo, colors, and footer, including the physical mailing address that anti-spam rules expect in commercial email.</li>
+      </ul>
+
+      <h2 id="forms">9. Swap signup forms</h2>
+      <ul>
+        <li>Replace AWeber web forms and landing pages with a beehiiv embed form or a link to your beehiiv signup page.</li>
+        <li>Update pop-ups, link-in-bio pages, social profiles, and email signatures.</li>
+        <li>Disconnect or redirect integrations that still add people to AWeber, so new signups don’t land in the old account.</li>
+        <li>Test a signup yourself, from the form to the welcome email.</li>
+      </ul>
+
+      <h2 id="dns">10. Domain and sending setup</h2>
+      <ul>
+        <li>If you send from your own domain, add the authentication records beehiiv asks for, plus a DMARC record if you don’t have one. Keep a single SPF record per domain.</li>
+        <li>Remove the old provider’s records only after you’ve stopped sending from AWeber.</li>
+        <li>Use the same sender name readers already know.</li>
+        <li>For larger lists, send to your most engaged readers first and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">11. Cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Send a heads-up from AWeber</strong>
+          Tell readers the newsletter is moving, when, and what sender name to expect.
+        </li>
+        <li>
+          <strong>Final export</strong>
+          Export Currently Subscribed again right before the switch to catch recent signups and unsubscribes.
+        </li>
+        <li>
+          <strong>Switch forms the same day</strong>
+          So no new signups land in the old account.
+        </li>
+        <li>
+          <strong>Send your first beehiiv issue</strong>
+          Watch opens, bounces, and replies for the first few sends.
+        </li>
+        <li>
+          <strong>Cancel last</strong>
+          Keep AWeber until your backup and reports are saved and nothing still depends on it. Check AWeber’s current billing terms before you cancel.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Lists, follow-ups, forms, and integrations inventoried</li>
+        <li>Backup Data zip saved offline</li>
+        <li>Currently Subscribed exports merged and deduplicated; unsubscribed, pending, and undeliverable left out</li>
+        <li>Imported into beehiiv and tagged “from-aweber”</li>
+        <li>Welcome email, template, and needed follow-ups rebuilt</li>
+        <li>All signup forms and integrations switched and tested</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>If your AWeber sends are really a newsletter and you want web posts, growth, and monetization tools in one place, beehiiv is the path this guide assumes. If your business depends on long automated funnels, staying put or running both may be the better call.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/constant-contact-to-beehiiv.html">Migrate Constant Contact → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+        <a href="/which-newsletter/terms.html">Terms</a>
+        <a href="/which-newsletter/privacy.html">Privacy</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, Patreon, WordPress, Jetpack, MailPoet, Constant Contact, or AWeber unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
