@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate Flodesk to beehiiv: subscribers, segments, workflows, and cutover | Which Newsletter</title>
+  <meta name="description" content="Process map for moving a newsletter from Flodesk to beehiiv: decide if it fits, export segments by CSV, filter out unsubscribed, bounced, and spam-marked contacts, map segments to tags, rebuild workflows and forms, and cut over.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/flodesk-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main id="main">
+    <div class="wrap">
+      <h1>Migrate Flodesk to beehiiv</h1>
+      <p class="lede">
+        A practical plan for creators and small businesses who send a newsletter from Flodesk and want a platform built around publishing and growing it:
+        decide whether the move fits, export your segments, strip out unsubscribed and bounced contacts, map segments to tags, rebuild workflows and forms, and cut over without confusing readers.
+        Confirm each step against current Flodesk and beehiiv help docs before you change anything.
+      </p>
+      <p class="affiliate-notice"><strong>Commission notice:</strong> If you sign up through links on this page, I may earn a commission at no cost to you. It doesn't change what I recommend. <a href="/which-newsletter/disclosure.html">Details</a>.</p>
+      <p class="meta">Guide outline · November 2026 · See also <a href="/which-newsletter/guides/mailerlite-to-beehiiv.html">Migrate MailerLite → beehiiv</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Take inventory first</a></li>
+          <li><a href="#export">Export subscribers from Flodesk</a></li>
+          <li><a href="#status">Clean the file by status</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#segments">Segments, tags, and custom fields</a></li>
+          <li><a href="#workflows">Workflows and design</a></li>
+          <li><a href="#forms">Swap signup forms and checkout links</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Flodesk and beehiiv change their export options, features, and pricing over time. This is a process map, not a vendor guarantee, and it is not legal advice. beehiiv links below may earn a commission; Flodesk is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>You can set up a beehiiv publication on the free Launch tier while you plan the move, then upgrade only when you need a paid feature.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        Flodesk is known for design-forward email templates, signup forms, workflows, and a built-in checkout for selling products.
+        beehiiv is built around publishing a newsletter, with a hosted publication site and web archive, plus growth and monetization tools such as referrals, recommendations, ads, and paid subscriptions.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>Your main email is a recurring newsletter, and you want each issue published on the web as a post people can find and subscribe from.</li>
+        <li>You want built-in ways to grow the list (referrals, recommendations) or earn from it (ads, paid tiers) rather than only mailing the people you already have.</li>
+        <li>Your list size or plan makes the pricing comparison worth a look. Compare both vendors’ current pricing pages for your list size.</li>
+      </ul>
+      <p>Stay on Flodesk if your business depends on its checkout and product sales, its specific template look, or workflows tied to Flodesk integrations. Some people keep Flodesk for selling and move only the newsletter to beehiiv.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>The export includes people you can’t email.</strong> Flodesk’s help docs say a segment CSV includes everyone in that segment, including unsubscribed, bounced, and marked-as-spam contacts. You must filter them out before importing.</li>
+        <li><strong>Unsubscribes must stay unsubscribed.</strong> Flodesk keeps unsubscribed contacts in your audience on purpose. Never import them into beehiiv as active subscribers.</li>
+        <li><strong>Unconfirmed people never confirmed.</strong> If you use double opt-in, leave unconfirmed contacts behind.</li>
+        <li><strong>Workflows, templates, and checkout don’t port.</strong> Rebuild what you still need in beehiiv by hand, if beehiiv supports it on your plan. Flodesk Checkout products need a separate home.</li>
+        <li><strong>Imports may be reviewed.</strong> beehiiv may review larger imports; follow its current import guidance and expect a short wait.</li>
+      </ul>
+
+      <h2 id="inventory">3. Take inventory first</h2>
+      <p>Before you export anything, write down:</p>
+      <ul>
+        <li>Every Flodesk segment, and which ones are the newsletter versus freebies, launches, buyers, or tests.</li>
+        <li>Custom data fields you actually use for targeting.</li>
+        <li>Every workflow, with what each email does and what triggers it.</li>
+        <li>Every place people sign up: inline forms, pop-ups, full-page forms, link-in-bio pages, checkout, and integrations such as Shopify or Zapier that add subscribers automatically.</li>
+        <li>Which domain you send from, and who controls its DNS.</li>
+      </ul>
+
+      <h2 id="export">4. Export subscribers from Flodesk</h2>
+      <p>Flodesk’s help center describes the export in its <a href="https://help.flodesk.com/en/articles/4794881" target="_blank" rel="noopener">CSV export article</a>. Check it for the current steps.</p>
+      <ul>
+        <li><strong>Whole list:</strong> go to Audience, then Segments, hover over the <strong>All subscribers</strong> segment, open the three-dot menu, and choose Download CSV.</li>
+        <li><strong>One segment:</strong> same steps on the segment card you want. Export each segment you plan to turn into a tag, so you keep that membership.</li>
+        <li><strong>Watch your inbox:</strong> the download link is emailed to your Flodesk login address and expires after 24 hours. If it doesn’t arrive and your login uses a custom-domain address, Flodesk suggests temporarily switching the login email to a free provider and exporting again.</li>
+        <li>Store the raw exports somewhere offline and private; they contain personal data.</li>
+      </ul>
+
+      <h2 id="status">5. Clean the file by status</h2>
+      <p>Flodesk tracks statuses such as active, unsubscribed, archived, unconfirmed, bounced, marked as spam, and cleaned. Look at the status column in your own file, since column names can vary:</p>
+      <ul>
+        <li><strong>Active:</strong> import as your audience.</li>
+        <li><strong>Unsubscribed:</strong> never import as active. Keep them in a separate file so they can’t be re-added by accident.</li>
+        <li><strong>Unconfirmed:</strong> leave behind.</li>
+        <li><strong>Bounced, cleaned, or marked as spam:</strong> leave behind.</li>
+        <li><strong>Archived:</strong> decide deliberately; if you’re not sure they still want your email, leave them out.</li>
+      </ul>
+
+      <h2 id="import">6. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email that names your newsletter so readers recognize you.
+        </li>
+        <li>
+          <strong>Merge and deduplicate</strong>
+          Combine the cleaned files and deduplicate by email, keeping each person’s original segment names as a column.
+        </li>
+        <li>
+          <strong>Import the cleaned CSV</strong>
+          Follow beehiiv’s current import steps and any review it requires.
+        </li>
+        <li>
+          <strong>Tag the source and spot-check</strong>
+          Add a tag like “from-flodesk”, then compare imported totals with your cleaned file before you send anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication while you clean the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="segments">7. Segments, tags, and custom fields</h2>
+      <p>In Flodesk, one audience is grouped into segments, and a person can be in several. beehiiv also treats your audience as one publication’s subscribers that you segment. A simple mapping:</p>
+      <ul>
+        <li>Your All subscribers list (cleaned) becomes the beehiiv subscriber base.</li>
+        <li>Segments you still target, such as a freebie or buyer segment, become tags or custom fields, then beehiiv segments.</li>
+        <li>Custom data fields you actually use move as custom fields; skip the rest.</li>
+        <li>Old launch or test segments can stay behind.</li>
+      </ul>
+
+      <h2 id="workflows">8. Workflows and design</h2>
+      <ul>
+        <li>Rebuild the welcome email first; every new subscriber sees it.</li>
+        <li>Recreate only the workflow emails that still earn their keep. Check beehiiv’s docs for which automation features your plan includes.</li>
+        <li>Rebuild one clean issue template with your logo, colors, and fonts as closely as beehiiv’s editor allows, including the physical mailing address that anti-spam rules expect in commercial email.</li>
+        <li>Save copies of past emails you want to keep, since send history and reports generally don’t transfer.</li>
+      </ul>
+
+      <h2 id="forms">9. Swap signup forms and checkout links</h2>
+      <ul>
+        <li>Replace Flodesk inline forms, pop-ups, and full-page forms with a beehiiv embed form or a link to your beehiiv signup page.</li>
+        <li>Update link-in-bio pages, social profiles, and email signatures.</li>
+        <li>Disconnect or redirect integrations that still add people to Flodesk, so new signups don’t land in the old account.</li>
+        <li>If you sell through Flodesk Checkout, decide where those products will live before you cancel, and tell buyers where to find what they bought.</li>
+        <li>Test a signup yourself, from the form to the welcome email.</li>
+      </ul>
+
+      <h2 id="dns">10. Domain and sending setup</h2>
+      <ul>
+        <li>If you send from your own domain, add the authentication records beehiiv asks for, plus a DMARC record if you don’t have one. Keep a single SPF record per domain.</li>
+        <li>Remove the old provider’s records only after you’ve stopped sending from Flodesk.</li>
+        <li>Use the same sender name readers already know.</li>
+        <li>For larger lists, send to your most engaged readers first and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">11. Cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Send a heads-up from Flodesk</strong>
+          Tell readers the newsletter is moving, when, and what sender name to expect.
+        </li>
+        <li>
+          <strong>Final export</strong>
+          Export All subscribers again right before the switch to catch recent signups and unsubscribes, and clean it the same way.
+        </li>
+        <li>
+          <strong>Switch forms the same day</strong>
+          So no new signups land in the old account.
+        </li>
+        <li>
+          <strong>Send your first beehiiv issue</strong>
+          Watch opens, bounces, and replies for the first few sends.
+        </li>
+        <li>
+          <strong>Cancel last</strong>
+          Keep Flodesk until your exports are saved and nothing (checkout, workflows, integrations) still depends on it. Check Flodesk’s current billing terms before you cancel.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Segments, workflows, forms, checkout, and integrations inventoried</li>
+        <li>All subscribers and needed segments exported within the 24-hour link window</li>
+        <li>Unsubscribed, unconfirmed, bounced, cleaned, and spam-marked contacts left out</li>
+        <li>Imported into beehiiv and tagged “from-flodesk”</li>
+        <li>Welcome email, template, and needed workflows rebuilt</li>
+        <li>All signup forms and integrations switched and tested</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>If your Flodesk sends are really a newsletter and you want web posts, growth, and monetization tools in one place, beehiiv is the path this guide assumes. If your business depends on Flodesk Checkout or its templates, staying put or running both may be the better call.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/mailerlite-to-beehiiv.html">Migrate MailerLite → beehiiv</a> ·
+        <a href="/which-newsletter/guides/aweber-to-beehiiv.html">Migrate AWeber → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+        <a href="/which-newsletter/terms.html">Terms</a>
+        <a href="/which-newsletter/privacy.html">Privacy</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, Patreon, WordPress, Jetpack, MailPoet, Constant Contact, AWeber, or Flodesk unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
