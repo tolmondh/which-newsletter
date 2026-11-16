@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrate Squarespace Email Campaigns to beehiiv: lists, exports, signup blocks, and cutover | Which Newsletter</title>
+  <meta name="description" content="Process map for moving a newsletter from Squarespace Email Campaigns to beehiiv: export each mailing list, import only the subscribed file, map lists to tags, swap newsletter blocks and pop-ups, authenticate your domain, and cut over.">
+  <link rel="stylesheet" href="/which-newsletter/styles.css">
+  <link rel="canonical" href="https://tolmondh.github.io/which-newsletter/guides/squarespace-to-beehiiv.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/which-newsletter/">Which Newsletter</a>
+      <nav aria-label="Primary">
+        <ul class="site-nav">
+          <li><a href="/which-newsletter/">Home</a></li>
+          <li><a href="/which-newsletter/compare.html">Compare</a></li>
+          <li><a href="/which-newsletter/guides/" aria-current="page">Guides</a></li>
+          <li><a href="/which-newsletter/about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <main id="main">
+    <div class="wrap">
+      <h1>Migrate Squarespace Email Campaigns to beehiiv</h1>
+      <p class="lede">
+        A practical plan for site owners who send a newsletter with Squarespace Email Campaigns and want a platform built around publishing and growing it:
+        decide whether the move fits, export your mailing lists, keep unsubscribed and cleaned addresses out, map lists to tags, swap your Squarespace signup blocks, and cut over without confusing readers.
+        Confirm each step against current Squarespace and beehiiv help docs before you change anything.
+      </p>
+      <p class="affiliate-notice"><strong>Commission notice:</strong> If you sign up through links on this page, I may earn a commission at no cost to you. It doesn't change what I recommend. <a href="/which-newsletter/disclosure.html">Details</a>.</p>
+      <p class="meta">Guide outline · November 2026 · See also <a href="/which-newsletter/guides/wordpress-to-beehiiv.html">Move a WordPress newsletter → beehiiv</a> · <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a></p>
+
+      <nav class="guide-toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ol>
+          <li><a href="#decide">Decide if a move fits</a></li>
+          <li><a href="#caveats">Honest caveats</a></li>
+          <li><a href="#inventory">Take inventory first</a></li>
+          <li><a href="#export">Export mailing lists from Squarespace</a></li>
+          <li><a href="#files">Use the three files correctly</a></li>
+          <li><a href="#import">Import into beehiiv</a></li>
+          <li><a href="#lists">Lists, segments, and tags</a></li>
+          <li><a href="#automations">Automations and design</a></li>
+          <li><a href="#forms">Swap Squarespace signup blocks</a></li>
+          <li><a href="#dns">Domain and sending setup</a></li>
+          <li><a href="#cutover">Cutover</a></li>
+          <li><a href="#checklist">Final checklist</a></li>
+        </ol>
+      </nav>
+
+      <div class="note">
+        <p><strong>Disclaimer:</strong> Squarespace and beehiiv change their export options, features, and pricing over time. This is a process map, not a vendor guarantee, and it is not legal advice. beehiiv links below may earn a commission; Squarespace is mentioned with no affiliate attribution.</p>
+      </div>
+
+      <div class="soft-box">
+        <p>You can set up a beehiiv publication on the free Launch tier while you plan the move, then upgrade only when you need a paid feature.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Try beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="decide">1. Decide if a move fits</h2>
+      <p>
+        Squarespace Email Campaigns is convenient because it lives next to your website and store: the same dashboard, the same branding, and contacts that come from your forms and orders.
+        beehiiv is built around publishing a newsletter, with a hosted publication site and web archive, plus growth and monetization tools such as referrals, recommendations, ads, and paid subscriptions.
+      </p>
+      <p>A move usually makes sense when:</p>
+      <ul>
+        <li>Your email has turned into a recurring newsletter rather than occasional store promotions.</li>
+        <li>You want built-in ways to grow the list (referrals, recommendations) or earn from it (ads, paid tiers).</li>
+        <li>You keep bumping into your Email Campaigns plan’s monthly send limit, and the pricing comparison is worth a look. Compare both vendors’ current pricing pages for your list size and send volume.</li>
+      </ul>
+      <p>Stay on Squarespace if most of your email is order-driven marketing tied to your Squarespace store, or if keeping everything in one dashboard matters more to you than newsletter features. Some people keep Squarespace for store email and move only the newsletter to beehiiv; your Squarespace website can stay exactly where it is either way.</p>
+
+      <h2 id="caveats">2. Honest caveats</h2>
+      <ul>
+        <li><strong>Unsubscribes must stay unsubscribed.</strong> Squarespace’s export puts unsubscribed people in their own file. Never import that file into beehiiv as active subscribers.</li>
+        <li><strong>Cleaned addresses bounced.</strong> The cleaned file holds addresses Squarespace removed after delivery problems. Leave them behind.</li>
+        <li><strong>Not every contact is a subscriber.</strong> Customers and form submitters in your Squarespace contacts didn’t necessarily agree to marketing email. Move only people on your mailing lists who opted in.</li>
+        <li><strong>Campaign designs and automations don’t port.</strong> Rebuild what you still need in beehiiv by hand, if beehiiv supports it on your plan.</li>
+        <li><strong>Imports may be reviewed.</strong> beehiiv may review larger imports; follow its current import guidance and expect a short wait.</li>
+      </ul>
+
+      <h2 id="inventory">3. Take inventory first</h2>
+      <p>Before you export anything, write down:</p>
+      <ul>
+        <li>Every mailing list (Squarespace allows up to 20), and which ones are the newsletter versus store customers, giveaways, or tests.</li>
+        <li>Any segments or tags you actually use for targeting.</li>
+        <li>Every email automation, with what each email does and what triggers it.</li>
+        <li>Every place people sign up: newsletter blocks, form blocks connected to a mailing list, promotional pop-ups, and the checkout’s marketing opt-in.</li>
+        <li>Which domain you send from, and who controls its DNS.</li>
+      </ul>
+
+      <h2 id="export">4. Export mailing lists from Squarespace</h2>
+      <p>Squarespace’s help center describes the export in its <a href="https://support.squarespace.com/hc/en-us/articles/360001280708-Build-mailing-lists" target="_blank" rel="noopener">mailing lists article</a>. Check it for the current steps.</p>
+      <ul>
+        <li><strong>Where:</strong> open the Lists &amp; Segments panel, click the three-dot menu next to a mailing list, and choose Export.</li>
+        <li><strong>What you get:</strong> a .zip file with three .csv files: subscribed users, unsubscribed users, and cleaned users.</li>
+        <li><strong>One list at a time:</strong> export each list you plan to keep, so you can turn its membership into a tag later.</li>
+        <li>Store the raw exports somewhere offline and private; they contain personal data.</li>
+      </ul>
+
+      <h2 id="files">5. Use the three files correctly</h2>
+      <p>The three files can look alike once opened, so rename them right away (for example <code>newsletter-subscribed.csv</code>) and keep them apart:</p>
+      <ul>
+        <li><strong>Subscribed:</strong> the only file to import as your beehiiv audience.</li>
+        <li><strong>Unsubscribed:</strong> never import as active. Keep it in a separate folder so nobody adds those people back by accident.</li>
+        <li><strong>Cleaned:</strong> leave behind; mailing them again from a new sender can hurt your deliverability.</li>
+      </ul>
+      <p>If one person appears as subscribed in one list and unsubscribed in another, decide deliberately; when in doubt, respect the unsubscribe.</p>
+
+      <h2 id="import">6. Import into beehiiv</h2>
+      <ol class="steps">
+        <li>
+          <strong>Create the publication first</strong>
+          Branding, sender name, reply-to address, and a short welcome email that names your newsletter so readers recognize you.
+        </li>
+        <li>
+          <strong>Merge and deduplicate</strong>
+          Combine the subscribed files and deduplicate by email, adding a column with each person’s original list names.
+        </li>
+        <li>
+          <strong>Import the cleaned CSV</strong>
+          Follow beehiiv’s current import steps and any review it requires.
+        </li>
+        <li>
+          <strong>Tag the source and spot-check</strong>
+          Add a tag like “from-squarespace”, then compare imported totals with your merged file before you send anything.
+        </li>
+      </ol>
+
+      <div class="soft-box">
+        <p>Setting up your publication while you sort the export?</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Open beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+      </div>
+
+      <h2 id="lists">7. Lists, segments, and tags</h2>
+      <p>Squarespace sends campaigns to one or more mailing lists. beehiiv treats your audience as one publication’s subscribers that you segment. A simple mapping:</p>
+      <ul>
+        <li>Your main newsletter list (subscribed file) becomes the beehiiv subscriber base.</li>
+        <li>Other lists you still target, such as customers who opted in or a workshop list, become tags or custom fields, then beehiiv segments.</li>
+        <li>Old giveaway or test lists can stay behind.</li>
+      </ul>
+
+      <h2 id="automations">8. Automations and design</h2>
+      <ul>
+        <li>Rebuild the welcome email first; every new subscriber sees it.</li>
+        <li>Recreate only the automated emails that still earn their keep. Check beehiiv’s docs for which automation features your plan includes.</li>
+        <li>Keep order and abandoned-cart emails in Squarespace if your store still runs there; those belong with the store, not the newsletter.</li>
+        <li>Rebuild one clean issue template with your logo, colors, and fonts as closely as beehiiv’s editor allows, including the physical mailing address that anti-spam rules expect in commercial email.</li>
+        <li>Save copies of past campaigns you want to keep, since send history and reports generally don’t transfer.</li>
+      </ul>
+
+      <h2 id="forms">9. Swap Squarespace signup blocks</h2>
+      <ul>
+        <li>Replace Squarespace newsletter blocks and pop-ups with a beehiiv embed (added through a Squarespace code block, where your plan allows it) or a button linking to your beehiiv signup page.</li>
+        <li>Disconnect form blocks and checkout opt-ins from the old newsletter list, or you’ll keep collecting newsletter signups in Squarespace.</li>
+        <li>Update link-in-bio pages, social profiles, and email signatures.</li>
+        <li>Test a signup yourself, from the form to the welcome email.</li>
+      </ul>
+
+      <h2 id="dns">10. Domain and sending setup</h2>
+      <ul>
+        <li>If you send from your own domain, add the authentication records beehiiv asks for, plus a DMARC record if you don’t have one. Keep a single SPF record per domain.</li>
+        <li>If your domain is managed in Squarespace Domains, add those records in its DNS settings; leave records your website needs untouched.</li>
+        <li>Use the same sender name readers already know.</li>
+        <li>For larger lists, send to your most engaged readers first and follow beehiiv’s warm-up guidance.</li>
+      </ul>
+
+      <h2 id="cutover">11. Cutover</h2>
+      <ol class="steps">
+        <li>
+          <strong>Send a heads-up from Squarespace</strong>
+          Tell readers the newsletter is moving, when, and what sender name to expect.
+        </li>
+        <li>
+          <strong>Final export</strong>
+          Export your lists again right before the switch to catch recent signups and unsubscribes, and sort the files the same way.
+        </li>
+        <li>
+          <strong>Switch blocks the same day</strong>
+          So no new signups land in the old list.
+        </li>
+        <li>
+          <strong>Send your first beehiiv issue</strong>
+          Watch opens, bounces, and replies for the first few sends.
+        </li>
+        <li>
+          <strong>Downgrade last</strong>
+          Keep your Email Campaigns plan until exports are saved and no store email depends on it. Check Squarespace’s current billing terms before you change plans.
+        </li>
+      </ol>
+
+      <h2 id="checklist">Final checklist</h2>
+      <ul>
+        <li>Mailing lists, automations, and signup points inventoried</li>
+        <li>Each list exported and the three files renamed and kept apart</li>
+        <li>Only subscribed users imported; unsubscribed and cleaned left out</li>
+        <li>Imported into beehiiv and tagged “from-squarespace”</li>
+        <li>Welcome email and template rebuilt</li>
+        <li>Newsletter blocks, pop-ups, form blocks, and checkout opt-ins switched and tested</li>
+        <li>Sending domain authenticated (if using your own domain)</li>
+      </ul>
+
+      <div class="soft-box">
+        <p>If your Squarespace emails are really a newsletter and you want web posts, growth, and monetization tools in one place, beehiiv is the path this guide assumes. If your email is mostly store marketing, staying put or running both may be the better call.</p>
+        <p>
+          <a class="btn" href="https://www.beehiiv.com/?via=tolmond-harrison" data-affiliate="beehiiv" target="_blank" rel="noopener sponsored">Start with beehiiv</a>
+          <span class="meta"> · Affiliate link · <a href="/which-newsletter/disclosure.html">Disclosure</a></span>
+        </p>
+        <p class="meta">Or return to the <a href="/which-newsletter/compare.html">full comparison</a>.</p>
+      </div>
+
+      <p>
+        Related:
+        <a href="/which-newsletter/guides/wordpress-to-beehiiv.html">Move a WordPress newsletter → beehiiv</a> ·
+        <a href="/which-newsletter/guides/mailchimp-to-beehiiv.html">Migrate Mailchimp → beehiiv</a> ·
+        <a href="/which-newsletter/guides/flodesk-to-beehiiv.html">Migrate Flodesk → beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-monetization.html">Monetize on beehiiv</a> ·
+        <a href="/which-newsletter/guides/beehiiv-pricing.html">beehiiv pricing</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <nav aria-label="Footer">
+        <a href="/which-newsletter/">Home</a>
+        <a href="/which-newsletter/compare.html">Compare</a>
+        <a href="/which-newsletter/about.html">About</a>
+        <a href="/which-newsletter/disclosure.html">Affiliate disclosure</a>
+        <a href="/which-newsletter/terms.html">Terms</a>
+        <a href="/which-newsletter/privacy.html">Privacy</a>
+      </nav>
+      <p>Which Newsletter is an independent site. Not affiliated with beehiiv, Kit, Ghost, Substack, MailerLite, Buttondown, Patreon, WordPress, Jetpack, MailPoet, Constant Contact, AWeber, Flodesk, or Squarespace unless stated otherwise.</p>
+    </div>
+  </footer>
+  <script data-goatcounter="https://whichnewsletter.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
